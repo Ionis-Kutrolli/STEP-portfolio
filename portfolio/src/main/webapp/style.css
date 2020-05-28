@@ -5,10 +5,26 @@
   width: 650px;
 }
 
+#title{
+    font-family: 'Roboto Mono', monospace;
+}
+
+p{
+    font-family: 'Roboto Slab', serif;
+}
+
+h3{
+    font-family: 'Roboto Slab', serif;
+}
+
+h4{
+    font-family: 'Roboto Slab', serif;
+}
+
 #imgs{
     position: absolute;
     overflow: hidden;
-    top: 25%;
+    top: 30%;
     left: 10%;
 }
 
@@ -42,19 +58,7 @@
 }
 
 
-#racing_drone {
-    display: none;
-    width: 473px;
-    border: 10px solid black;
-}
-
-#drone_swarm{
-    display: none;
-    width: 473px;
-    border: 10px solid black
-}
-
-#place{
+.project_imgs {
     display: none;
     width: 473px;
     border: 10px solid black;
