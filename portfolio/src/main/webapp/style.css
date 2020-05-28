@@ -1,31 +1,62 @@
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  text-align: center justify;
 }
 
-#about_me {
+#content div {
+    width: 650px;
+}
+.bordered {
     width: 700px;
     padding: 20px;
-    border: 10px solid black;
+    border: 10px solid;
+    border-image: linear-gradient(to right, black, transparent black);
+    border-image-slice: 1;
     margin-left: auto;
     margin-right: auto;
     clip-path:
     polygon(
-        12.5% 10%,
+        12.5% 5%,
         12.5% 0,
         100% 0%,
         100% 60%,
         97.5% 60%,
-        97.5% 90%,
-        87.5% 90%,
+        97.5% 95%,
+        87.5% 95%,
         87.5% 100%,
         0 100%,
         0 40%,
         2.5% 40%,
-        2.5% 10%
+        2.5% 5%
         );
 }
+
+.bordered#projects{
+    padding: 45px;
+}
+
+img{
+    display: block;
+    width: 100px;
+}
+
+.project_imgs{
+    position: relative;
+    top: 300px;
+}
+
+.clickable:hover{
+    padding-left: 2px;
+    padding-right: 2px;
+    border:2px solid black;
+}
+
+.clickable:hover h4{
+    color:midnightblue;
+}
+
+
 
 #greeting-container {
   margin-top: 20px;
