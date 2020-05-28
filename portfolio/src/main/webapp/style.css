@@ -1,12 +1,17 @@
 #content {
   margin-left: auto;
   margin-right: auto;
-  text-align: center justify;
+  text-align: justify;
+  width: 650px;
 }
 
-#content div {
-    width: 650px;
+#imgs{
+    position: absolute;
+    overflow: hidden;
+    top: 25%;
+    left: 10%;
 }
+
 .bordered {
     width: 700px;
     padding: 20px;
@@ -36,14 +41,23 @@
     padding: 45px;
 }
 
-img{
-    display: block;
-    width: 100px;
+
+#racing_drone {
+    display: none;
+    width: 473px;
+    border: 10px solid black;
 }
 
-.project_imgs{
-    position: relative;
-    top: 300px;
+#drone_swarm{
+    display: none;
+    width: 473px;
+    border: 10px solid black
+}
+
+#place{
+    display: none;
+    width: 473px;
+    border: 10px solid black;
 }
 
 .clickable:hover{
