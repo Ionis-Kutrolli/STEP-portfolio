@@ -5,12 +5,32 @@
   width: 650px;
 }
 
-#title-div {
+#nav-bar {
   background-color: black;
 }
 
 #title {
   font-family: 'Roboto Mono', monospace;
+  color: white;
+  display: inline-block;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.nav-button {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+  background-color: white;
+  color: black;
+  display: inline-block;
+  text-decoration: none;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 5px;
+}
+
+.nav-button:hover {
+  background-color: transparent;
   color: white;
 }
 
@@ -19,19 +39,15 @@ h3, h4, p {
 }
 
 #imgs {
-  position: sticky;
+  position: absolute;
   overflow: hidden;
-  top: 30%;
-  left: 10%;
-  z-index: -1;
+  top: 18vw;
 }
 
 .bordered {
   width: 700px;
   padding: 20px;
   border: 10px solid;
-  border-image: linear-gradient(to right, black, transparent black);
-  border-image-slice: 1;
   margin-left: auto;
   margin-right: auto;
   clip-path:
@@ -57,7 +73,8 @@ h3, h4, p {
 
 .project_imgs {
   display: none;
-  width: 473px;
+  width: auto;
+  max-width: 25vw;
   border: 10px solid black;
 }
 
