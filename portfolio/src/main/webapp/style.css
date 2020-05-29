@@ -1,30 +1,91 @@
 #content {
   margin-left: auto;
   margin-right: auto;
+  text-align: justify;
   width: 650px;
 }
 
-#about_me {
-    width: 700px;
-    padding: 20px;
-    border: 10px solid black;
-    margin-left: auto;
-    margin-right: auto;
-    clip-path:
-    polygon(
-        12.5% 10%,
-        12.5% 0,
-        100% 0%,
-        100% 60%,
-        97.5% 60%,
-        97.5% 90%,
-        87.5% 90%,
-        87.5% 100%,
-        0 100%,
-        0 40%,
-        2.5% 40%,
-        2.5% 10%
-        );
+#nav-bar {
+  background-color: black;
+}
+
+#title {
+  font-family: 'Roboto Mono', monospace;
+  color: white;
+  display: inline-block;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.nav-button {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+  background-color: white;
+  color: black;
+  display: inline-block;
+  text-decoration: none;
+  padding: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+}
+
+.nav-button:hover {
+  background-color: transparent;
+  color: white;
+}
+
+h3, h4, h5, p {
+  font-family: 'Roboto Slab', serif;
+}
+
+#imgs {
+  position: absolute;
+  overflow: hidden;
+  top: 18vw;
+}
+
+.bordered {
+  width: 700px;
+  padding: 20px;
+  border: 10px solid;
+  margin-left: auto;
+  margin-right: auto;
+  clip-path:
+  polygon(
+    12.5% 5%,
+    12.5% 0,
+    100% 0%,
+    100% 60%,
+    97.5% 60%,
+    97.5% 95%,
+    87.5% 95%,
+    87.5% 100%,
+    0 100%,
+    0 40%,
+    2.5% 40%,
+    2.5% 5%
+    );
+}
+
+.bordered#projects { 
+  padding: 45px;
+}
+
+.project_imgs {
+  display: none;
+  width: auto;
+  max-width: 25vw;
+  border: 10px solid black;
+}
+
+.clickable:hover {
+  padding-left: 2px;
+  padding-right: 2px;
+  border:2px solid black;
+}
+
+.clickable:hover h4 {
+  color:midnightblue;
 }
 
 #greeting-container {
