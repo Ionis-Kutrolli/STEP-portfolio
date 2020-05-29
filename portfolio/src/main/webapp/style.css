@@ -101,10 +101,15 @@ h3, h4, h5, p {
   padding: 45px;
 }
 
-.project_imgs, .rock_climbing {
+.project_imgs {
   display: none;
   width: auto;
   max-width: 25vw;
+  border: 10px solid black;
+}
+
+.rock_climbing {
+  display: none;
   border: 10px solid black;
 }
 
