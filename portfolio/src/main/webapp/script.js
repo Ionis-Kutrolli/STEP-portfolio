@@ -51,3 +51,10 @@ function displayRockClimbingVideos() {
     element.style.display = "block"
   }
 }
+
+/**
+ * Initialies a Google Translate element for translating albanian segment
+ */
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'sq', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+}

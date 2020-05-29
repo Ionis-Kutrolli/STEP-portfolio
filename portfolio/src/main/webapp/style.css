@@ -50,6 +50,11 @@ h3, h4, h5, p {
   top: 10vw;
 }
 
+#google_translate_element {
+  position: absolute;
+  overflow: hidden;
+}
+
 .bordered {
   width: 700px;
   padding: 20px;
