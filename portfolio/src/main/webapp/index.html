@@ -9,61 +9,63 @@
     <script src="script.js"></script>
   </head>
   <body>
+    <div id="title-div">
+      <h1 id="title">Ionis Kutrolli's Portfolio</h1>
+    </div>
     <div id="imgs">
-         <img src="/images/racing_drone.jpg" alt="Racing Drone" class="project_imgs" id="racing_drone">
-         <img src="/images/place.png" alt="Reddit's Original Place" class="project_imgs" id="place">
-         <img src="/images/drone_swarm.png" alt="Individual Drone Swarm Drone" class="project_imgs" id="drone_swarm">
+      <img src="/images/racing_drone.jpg" alt="Racing Drone" class="project_imgs" id="racing_drone">
+      <img src="/images/place.png" alt="Reddit's Original Place" class="project_imgs" id="place">
+      <img src="/images/drone_swarm.png" alt="Individual Drone Swarm Drone" class="project_imgs" id="drone_swarm">
     </div>
     <div id="content">
-      <h1 id="title">Ionis Kutrolli's Portfolio</h1>
-        <div id="about_me" class="bordered">
-            <h2>About Me</h2>
-            <p>I'm a rising junior at Rochester Institute of Technology (RIT) 
-                studying Computer Science. My main interests in CS are AI, 
-                Algorithms and Data Structures. That being said, there are still
-                so many more topics in CS that I have yet to explore and may have
-                interest in.
-            </p>
-        </div>
-        <br>
-        <div id="projects" class="bordered">
-            <h2>Previous Projects</h2>
-            <p>Included are three projects both academic and personal that I worked on over the
-                 past few years. Two of the projects are programming intensive, the third is a 
-                 combination of a few disciplines.
-            </p>
-            <h6>Click on the project paragraphs to see what they looked like!</h6>
-            <h3>2019</h3>
-            <div class="clickable" onclick="displayImage('drone_swarm')">
-                <h4>Drone Swarm Visualization</h4>
-                <p>A Hackathon project that simulates drone swarms and vizualizes their movements. 
-                    The drones work as clients to the simulation which was the server. Each drone
-                    is independent and uses its own logic and information from surrounding drone 
-                    to determine path to travel.
-                </p>
-            </div>
-            <h3>2018</h3>
-            <div class="clickable" onclick="displayImage('place')">
-                <h4>r/Place Replication and Bots</h4>
-                <p>As a class project I made a client server immitation of reddit's r/Place page
-                    from a few years ago. If you don't know what r/Place is, it was a webpage were people
-                    could change one pixel on the page at a time to create anything. The project had all 
-                    the elements from the original only simplified. As an addition to the project, I 
-                    created a bot that used Google's custom search api to image search the user's input 
-                    and scale the image to the size of the board and draw it using the limited colors given. 
-                </p>
-            </div>
-            <br>
-            <div class="clickable" onclick="displayImage('racing_drone')">
-                <h4>Racing Drone</h4>
-                <p>A summer project I embarked on to create a racing drone from scratch (mostly). The project
-                    entailed designing and 3D printing a drone body, researching all the electronic components,
-                    and programming the controller. This is one of my favorite projects since it combined so many
-                    different disciplines, that I was new to, together. The final product was a very fast an low
-                    profile drone that I ended up crashing. :(
-                </p>
-            </div>
-        </div>
+      <div id="about_me" class="bordered">
+        <h2>About Me</h2>
+        <p>I'm a rising junior at Rochester Institute of Technology (RIT) 
+            studying Computer Science. My main interests in CS are AI, 
+            Algorithms and Data Structures. That being said, there are still
+            so many more topics in CS that I have yet to explore and may have
+            interest in.
+        </p>
+      </div>
+      <br>
+      <div id="projects" class="bordered">
+        <h2>Previous Projects</h2>
+        <p>Included are three projects both academic and personal that I worked on over the
+            past few years. Two of the projects are programming intensive, the third is a 
+            combination of a few disciplines.
+        </p>
+        <h6>Click on the project paragraphs to see what they looked like!</h6>
+        <h3>2019</h3>
+      <div class="clickable" onclick="displayImage('drone_swarm')">
+        <h4>Drone Swarm Visualization</h4>
+        <p>A Hackathon project that simulates drone swarms and vizualizes their movements. 
+            The drones work as clients to the simulation which was the server. Each drone
+            is independent and uses its own logic and information from surrounding drone 
+            to determine path to travel.
+        </p>
+      </div>
+        <h3>2018</h3>
+      <div class="clickable" onclick="displayImage('place')">
+        <h4>r/Place Replication and Bots</h4>
+        <p>As a class project I made a client server immitation of reddit's r/Place page
+            from a few years ago. If you don't know what r/Place is, it was a webpage were people
+            could change one pixel on the page at a time to create anything. The project had all 
+            the elements from the original only simplified. As an addition to the project, I 
+            created a bot that used Google's custom search api to image search the user's input 
+            and scale the image to the size of the board and draw it using the limited colors given. 
+        </p>
+      </div>
+      <br>
+      <div class="clickable" onclick="displayImage('racing_drone')">
+        <h4>Racing Drone</h4>
+        <p>A summer project I embarked on to create a racing drone from scratch (mostly). The project
+            entailed designing and 3D printing a drone body, researching all the electronic components,
+            and programming the controller. This is one of my favorite projects since it combined so many
+            different disciplines, that I was new to, together. The final product was a very fast an low
+            profile drone that I ended up crashing. :(
+        </p>
+      </div>
+    </div>
       <p>Click here to get a random message:</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
