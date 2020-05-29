@@ -9,15 +9,7 @@
     font-family: 'Roboto Mono', monospace;
 }
 
-p{
-    font-family: 'Roboto Slab', serif;
-}
-
-h3{
-    font-family: 'Roboto Slab', serif;
-}
-
-h4{
+h3 h4 p{
     font-family: 'Roboto Slab', serif;
 }
 
@@ -57,7 +49,6 @@ h4{
     padding: 45px;
 }
 
-
 .project_imgs {
     display: none;
     width: 473px;
@@ -73,7 +64,6 @@ h4{
 .clickable:hover h4{
     color:midnightblue;
 }
-
 
 #greeting-container {
   margin-top: 20px;
