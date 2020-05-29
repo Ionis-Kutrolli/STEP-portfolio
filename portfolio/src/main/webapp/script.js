@@ -35,9 +35,9 @@ function displayImage(id) {
   var elements = document.getElementsByClassName("project_imgs");
   for (let element of elements) {
     if (element.id === id){
-    element.style.display = "block";
+      element.style.display = "block";
     } else {
-    element.style.display = "none";
+      element.style.display = "none";
     }
   }
 }
