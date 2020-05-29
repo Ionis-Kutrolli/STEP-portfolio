@@ -41,3 +41,13 @@ function displayImage(id) {
     }
   }
 }
+
+/**
+ * Displays the videos that are labled rock_climbing.
+ */
+function displayRockClimbingVideos() {
+  var elements = document.getElementsByClassName("rock_climbing");
+  for (let element of elements) {
+    element.style.display = "block"
+  }
+}
