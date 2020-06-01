@@ -66,7 +66,7 @@ function googleTranslateElementInit() {
  * Fetches the comments from the serverlet to display inside comments-container div
  */
 function getCommentList() {
-  fetch('/data').then(response => response.json()).then((comments) => {
+  fetch('/comment').then(response => response.json()).then((comments) => {
 
     const commentListElement = document.getElementById('comment-container');
 

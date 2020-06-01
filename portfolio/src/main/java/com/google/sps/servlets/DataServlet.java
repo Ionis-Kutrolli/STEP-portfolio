@@ -15,6 +15,7 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import com.google.sps.data.Comments;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -23,19 +24,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
+@WebServlet("/comment")
 public class DataServlet extends HttpServlet {
+
+  private Comments comments = new Comments();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ArrayList<String> comments = new ArrayList<>();
-    comments.add("Great!");
-    comments.add("Amazing!");
-    comments.add("WOW!");
-
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
+    String json = gson.toJson(comments.getComments());
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    //Get input from form 
+    String comment = request.getParameter("comment");
+
+    //Add comment to ArrayList
+    comments.addComment(comment);
+
+    response.sendRedirect("/index.html");
   }
 }
