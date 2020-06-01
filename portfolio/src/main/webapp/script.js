@@ -73,7 +73,7 @@ function getCommentList() {
     for(comment of comments) {
       console.log(comment);
       commentListElement.appendChild(
-        createElementList(comment));
+        createElementList(comment.comment));
     }
   });
 }
