@@ -41,3 +41,23 @@ function displayImage(id) {
     }
   }
 }
+
+/**
+ * Displays the videos that are labled rock_climbing.
+ */
+function displayRockClimbingVideos() {
+  var elements = document.getElementsByClassName("rock_climbing");
+  for (let element of elements) {
+    element.style.display = "block"
+  }
+}
+
+/**
+ * Initialies a Google Translate element for translating albanian segment
+ */
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'sq', 
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 
+    'google_translate_element');
+}

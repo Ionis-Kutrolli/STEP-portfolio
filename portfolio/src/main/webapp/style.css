@@ -17,7 +17,7 @@
   padding-left: 10px;
 }
 
-.nav-button {
+.nav-button, .footer_link {
   font-family: 'Roboto Mono', monospace;
   font-size: 25px;
   background-color: white;
@@ -26,6 +26,17 @@
   text-decoration: none;
   padding: 5px;
   margin-right: 5px;
+  border-radius: 10px;
+}
+
+.footer_link {
+  margin-right: 30px;
+  text-decoration: underline;
+}
+
+.footer_link:hover {
+  background-color: black;
+  color: white;
   border-radius: 10px;
 }
 
@@ -42,6 +53,25 @@ h3, h4, h5, p {
   position: absolute;
   overflow: hidden;
   top: 18vw;
+}
+
+#videos {
+  position: absolute;
+  overflow: hidden;
+  top: 10vw;
+}
+
+#albanian {
+  position: absolute;
+  overflow: hidden;
+  top: 10vw;
+  left: 75vw;
+  width:auto;
+}
+
+#google_translate_element {
+  position: absolute;
+  overflow: hidden;
 }
 
 .bordered {
@@ -78,6 +108,11 @@ h3, h4, h5, p {
   border: 10px solid black;
 }
 
+.rock_climbing {
+  display: none;
+  border: 10px solid black;
+}
+
 .clickable:hover {
   padding-left: 2px;
   padding-right: 2px;
@@ -91,3 +126,4 @@ h3, h4, h5, p {
 #greeting-container {
   margin-top: 20px;
 }
+
