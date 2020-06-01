@@ -63,11 +63,28 @@ function googleTranslateElementInit() {
 }
 
 /**
- * Fetched the data from the serverlet to display inside data container
+ * Fetches the comments from the serverlet to display inside comments-container div
  */
-async function getDataAsync() {
-  const response = await fetch('/data');
-  const data = await response.text();
+function getCommentList() {
+  fetch('/data').then(response => response.json()).then((comments) => {
 
-  document.getElementById('data-container').innerText = data;
+    const commentListElement = document.getElementById('comment-container');
+
+    for(comment of comments) {
+      console.log(comment);
+      commentListElement.appendChild(
+        createElementList(comment));
+    }
+  });
+}
+
+/**
+ * Creates an list element with prespecified text
+ * @param {string} text Text to be put in the list element
+ */
+function createElementList(text) {
+  const liElement = document.createElement('li');
+
+  liElement.innerText = text;
+  return liElement;
 }
