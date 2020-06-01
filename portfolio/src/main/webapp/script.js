@@ -62,20 +62,17 @@ function googleTranslateElementInit() {
     'google_translate_element');
 }
 
-/**
- * Fetches the comments from the serverlet to display inside comments-container div
- */
-function getCommentList() {
-  fetch('/comment').then(response => response.json()).then((comments) => {
+/** Fetches the comments from the servlet */
+function loadComments() {
+  fetch('/comment').then(response => response.json()).then(addCommentsToDom);
+}
 
+/** Adds comments to DOM. */
+function addCommentsToDom(comments) {
     const commentListElement = document.getElementById('comment-container');
-
-    for(comment of comments) {
-      console.log(comment);
-      commentListElement.appendChild(
-        createElementList(comment.comment));
-    }
-  });
+    comments.forEach((comment) => {
+      commentListElement.appendChild(createElementList(comment.comment));
+    });
 }
 
 /**

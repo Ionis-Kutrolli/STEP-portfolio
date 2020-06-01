@@ -10,6 +10,7 @@ public class Comment {
   private final String user;
   private final long id;
   private final String comment;
+  // Timestamp in millis
   private final long timestamp;
 
   public Comment(long id, String user, String comment, long timestamp) {
