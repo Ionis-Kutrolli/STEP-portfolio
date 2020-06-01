@@ -61,3 +61,13 @@ function googleTranslateElementInit() {
     layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 
     'google_translate_element');
 }
+
+/**
+ * Fetched the data from the serverlet to display inside data container
+ */
+async function getDataAsync() {
+  const response = await fetch('/data');
+  const data = await response.text();
+
+  document.getElementById('data-container').innerText = data;
+}
