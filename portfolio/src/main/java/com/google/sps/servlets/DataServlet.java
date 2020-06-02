@@ -47,11 +47,17 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       long timestamp = (long) entity.getProperty("timestamp");
       String userComment = (String) entity.getProperty("comment");
+      String user = (String) entity.getProperty("user"); // Maybe null if no user
 
-      Comment comment = new Comment(id, "Anonymous", userComment, timestamp);
+      if (user == null) {
+        user = "Anonymous";
+      }
+
+      Comment comment = new Comment(id, user, userComment, timestamp);
       comments.add(comment);
     }
     
+    //Json conversion
     Gson gson = new Gson();
     String json = gson.toJson(comments);
     response.setContentType("application/json;");
@@ -67,6 +73,9 @@ public class DataServlet extends HttpServlet {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("comment", comment);
     commentEntity.setProperty("timestamp", timestamp);
+
+    // TODO: setup non null users
+    commentEntity.setProperty("user", null);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
