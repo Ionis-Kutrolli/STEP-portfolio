@@ -46,11 +46,7 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     List<Comment> comments = new ArrayList<>();
-    Iterator<Entity> resultsIterator = results.asIterator();
-
-    for (int i = 0; i < maxComments && results.asIterator().hasNext(); i++){
-      Entity entity = resultsIterator.next();
-
+    for(Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       long timestamp = (long) entity.getProperty("timestamp");
       String userComment = (String) entity.getProperty("comment");
@@ -63,21 +59,6 @@ public class DataServlet extends HttpServlet {
       Comment comment = new Comment(id, user, userComment, timestamp);
       comments.add(comment);
     }
-
-    // List<Comment> comments = new ArrayList<>();
-    // for(Entity entity : results.asIterable()) {
-    //   long id = entity.getKey().getId();
-    //   long timestamp = (long) entity.getProperty("timestamp");
-    //   String userComment = (String) entity.getProperty("comment");
-    //   String user = (String) entity.getProperty("user"); // Maybe null if no user
-
-    //   if (user == null) {
-    //     user = "Anonymous";
-    //   }
-
-    //   Comment comment = new Comment(id, user, userComment, timestamp);
-    //   comments.add(comment);
-    // }
     
     //Json conversion
     Gson gson = new Gson();
