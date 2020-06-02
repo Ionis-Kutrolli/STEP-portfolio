@@ -49,7 +49,7 @@ function googleTranslateElementInit() {
 
 /** Fetches the comments from the servlet */
 function loadComments() {
-  fetch('/comment', {method: 'GET'}).then(response => response.json()).then(addCommentsToDOM);
+  fetch('/comment').then(response => response.json()).then(addCommentsToDOM);
 }
 
 /** Adds comments to DOM. */
@@ -67,7 +67,7 @@ function deleteComments() {
 }
 
 /** Deletes the elements from the DOM */
-function removeCommentsFromDOM() {
+function removeCommentsFromDOM(){
   const commentListElement = document.getElementById('comment-container');
   while (commentListElement.lastElementChild) {
     commentListElement.removeChild(commentListElement.lastElementChild);

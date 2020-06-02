@@ -35,12 +35,12 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
-  private int maxComments = 5;
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retreive comments stored by the database
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+
+    int maxComments = getMaxComments(request);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -92,8 +92,6 @@ public class DataServlet extends HttpServlet {
     String comment = request.getParameter("comment");
     long timestamp = System.currentTimeMillis();
 
-    getMaxComments(request);
-
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("comment", comment);
     commentEntity.setProperty("timestamp", timestamp);
@@ -108,15 +106,18 @@ public class DataServlet extends HttpServlet {
   }
 
   /** Retreives the max comments parameter and converts it to int */
-  public void getMaxComments(HttpServletRequest request) {
+  public int getMaxComments(HttpServletRequest request) {
     String maxCommentsString = request.getParameter("max-comments");
 
+    int maxComments;
     try {
       maxComments = Integer.parseInt(maxCommentsString);
     } catch (NumberFormatException e) {
       System.err.println("Could not convert to int: " + maxCommentsString);
-      return;
+      return -1;
     }
+
+    return maxComments;
   }
 
 }
