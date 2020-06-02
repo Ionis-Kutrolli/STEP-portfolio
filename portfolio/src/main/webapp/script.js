@@ -57,6 +57,7 @@ function addCommentsToDOM(comments) {
     const commentListElement = document.getElementById('comment-container');
     comments.forEach((comment) => {
       commentListElement.appendChild(createElementList(comment.comment));
+      console.log(comment.timestamp);
     });
 }
 
