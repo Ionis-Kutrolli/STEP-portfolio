@@ -18,6 +18,7 @@ import java.io.IOException;
 import com.google.sps.data.Comment;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,16 +37,20 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    request.getParameter("max-comments");
-
     // Retreive comments stored by the database
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+
+    int maxComments = getMaxComments(request);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     List<Comment> comments = new ArrayList<>();
-    for(Entity entity : results.asIterable()) {
+    Iterator<Entity> resultsIterator = results.asIterator();
+
+    for (int i = 0; i < maxComments && results.asIterator().hasNext(); i++){
+      Entity entity = resultsIterator.next();
+
       long id = entity.getKey().getId();
       long timestamp = (long) entity.getProperty("timestamp");
       String userComment = (String) entity.getProperty("comment");
@@ -58,6 +63,21 @@ public class DataServlet extends HttpServlet {
       Comment comment = new Comment(id, user, userComment, timestamp);
       comments.add(comment);
     }
+
+    // List<Comment> comments = new ArrayList<>();
+    // for(Entity entity : results.asIterable()) {
+    //   long id = entity.getKey().getId();
+    //   long timestamp = (long) entity.getProperty("timestamp");
+    //   String userComment = (String) entity.getProperty("comment");
+    //   String user = (String) entity.getProperty("user"); // Maybe null if no user
+
+    //   if (user == null) {
+    //     user = "Anonymous";
+    //   }
+
+    //   Comment comment = new Comment(id, user, userComment, timestamp);
+    //   comments.add(comment);
+    // }
     
     //Json conversion
     Gson gson = new Gson();
@@ -84,4 +104,20 @@ public class DataServlet extends HttpServlet {
 
     response.sendRedirect("/index.html");
   }
+
+  /** Retreives the max comments parameter and converts it to int */
+  public int getMaxComments(HttpServletRequest request) {
+    String maxCommentsString = request.getParameter("max-comments");
+
+    int maxComments;
+    try {
+      maxComments = Integer.parseInt(maxCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + maxCommentsString);
+      return -1;
+    }
+
+    return maxComments;
+  }
+
 }
