@@ -61,3 +61,27 @@ function googleTranslateElementInit() {
     layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 
     'google_translate_element');
 }
+
+/** Fetches the comments from the servlet */
+function loadComments() {
+  fetch('/comment').then(response => response.json()).then(addCommentsToDom);
+}
+
+/** Adds comments to DOM. */
+function addCommentsToDom(comments) {
+    const commentListElement = document.getElementById('comment-container');
+    comments.forEach((comment) => {
+      commentListElement.appendChild(createElementList(comment.comment));
+    });
+}
+
+/**
+ * Creates an list element with prespecified text
+ * @param {string} text Text to be put in the list element
+ */
+function createElementList(text) {
+  const liElement = document.createElement('li');
+
+  liElement.innerText = text;
+  return liElement;
+}
