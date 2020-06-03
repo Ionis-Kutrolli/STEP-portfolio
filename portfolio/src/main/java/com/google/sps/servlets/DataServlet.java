@@ -47,7 +47,7 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     Iterator<Entity> resultsIterator = results.asIterator();
-    for (int i = 0; i < numCommentsMax && results.asIterator().hasNext(); i++){
+    for (int i = 0; (i < numCommentsMax && resultsIterator.hasNext()); i++){
       Entity entity = resultsIterator.next();
 
       long id = entity.getKey().getId();
@@ -59,7 +59,7 @@ public class DataServlet extends HttpServlet {
         user = "Anonymous";
       }
       
-      Comment comment = new Comment(id, user, userComment, timestamp);
+      Comment comment = new Comment(id, "user", userComment, timestamp);
       comments.add(comment);
     }
 
