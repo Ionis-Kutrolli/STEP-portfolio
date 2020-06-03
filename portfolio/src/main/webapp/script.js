@@ -52,12 +52,14 @@ function loadComments() {
   fetch('/comment').then(response => response.json()).then(addCommentsToDOM);
 }
 
-/** Adds comments to DOM. */
+/** Adds comments with user name to DOM. */
 function addCommentsToDOM(comments) {
     const commentListElement = document.getElementById('comment-container');
     comments.forEach((comment) => {
-      commentListElement.appendChild(createElementList(comment.comment));
-      console.log(comment.timestamp);
+      var time = new Date(comment.timestamp);
+      var commentDisplay = time.toLocaleString() + ":\t" + comment.user +  ": " + comment.comment;
+      commentListElement.appendChild(createElementList(commentDisplay));
+
     });
 }
 

@@ -55,11 +55,11 @@ public class DataServlet extends HttpServlet {
       String userComment = (String) entity.getProperty("comment");
       String user = (String) entity.getProperty("user"); // Maybe null if no user
 
-      if (user == null) {
+      if (user == "") {
         user = "Anonymous";
       }
       
-      Comment comment = new Comment(id, "user", userComment, timestamp);
+      Comment comment = new Comment(id, user, userComment, timestamp);
       comments.add(comment);
     }
 
