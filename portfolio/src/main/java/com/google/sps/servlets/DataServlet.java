@@ -18,6 +18,7 @@ import java.io.IOException;
 import com.google.sps.data.Comment;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,6 +39,8 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retreive comments stored by the database
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+
+    int maxComments = getMaxComments(request);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -82,4 +85,20 @@ public class DataServlet extends HttpServlet {
 
     response.sendRedirect("/index.html");
   }
+
+  /** Retreives the max comments parameter and converts it to int */
+  public int getMaxComments(HttpServletRequest request) {
+    String maxCommentsString = request.getParameter("max-comments");
+
+    int maxComments;
+    try {
+      maxComments = Integer.parseInt(maxCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + maxCommentsString);
+      return -1;
+    }
+
+    return maxComments;
+  }
+
 }

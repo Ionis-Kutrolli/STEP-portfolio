@@ -13,21 +13,6 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-
-/**
  * Changes the image that is displaying corresponds to the id specified.
  * @param {string} id The id of the image to display.
  */
@@ -64,15 +49,29 @@ function googleTranslateElementInit() {
 
 /** Fetches the comments from the servlet */
 function loadComments() {
-  fetch('/comment').then(response => response.json()).then(addCommentsToDom);
+  fetch('/comment').then(response => response.json()).then(addCommentsToDOM);
 }
 
 /** Adds comments to DOM. */
-function addCommentsToDom(comments) {
+function addCommentsToDOM(comments) {
     const commentListElement = document.getElementById('comment-container');
     comments.forEach((comment) => {
       commentListElement.appendChild(createElementList(comment.comment));
+      console.log(comment.timestamp);
     });
+}
+
+/** Sends request to delete comments from database */
+function deleteComments() {
+  fetch('/delete-comments', {method: 'POST'}).then(removeCommentsFromDOM);
+}
+
+/** Deletes the elements from the DOM */
+function removeCommentsFromDOM(){
+  const commentListElement = document.getElementById('comment-container');
+  while (commentListElement.lastElementChild) {
+    commentListElement.removeChild(commentListElement.lastElementChild);
+  }
 }
 
 /**

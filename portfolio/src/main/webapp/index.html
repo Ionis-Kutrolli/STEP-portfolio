@@ -78,7 +78,10 @@
     <div id="comment-container"></div>
     <form action="/comment" method="POST">
       <p>Leave a comment:</p>
+      <input type="number" name="max-comments" min="5" max="10" value="5">
       <input type="text" name="comment">
       <input type="submit" />
+    </form>
+      <button class="delete-button" onclick="deleteComments()">Delete</button>
   </body>
 </html>
