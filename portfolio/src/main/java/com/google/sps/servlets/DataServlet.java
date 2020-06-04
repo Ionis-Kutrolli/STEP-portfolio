@@ -74,7 +74,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     int maxComments = getMaxComments(request);
 
-    if (maxComments == -1) {
+    if (maxComments == -1 || maxComments < 5 || maxComments > 10) {
       response.setContentType("text/html");
       response.getWriter().println("Please enter integer between 5 and 10.");
       return;

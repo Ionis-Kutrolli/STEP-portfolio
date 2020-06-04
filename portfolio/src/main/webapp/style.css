@@ -136,6 +136,7 @@ h3, h4, h5, p {
 input[type=text] {
   width: 10vw;
   background-color: #222;
+  color: white;
   box-sizing: border-box;
   outline: none;
   border: 2px solid white;
@@ -155,9 +156,14 @@ input[type=text]::placeholder {
 }
 
 input[type=submit] {
-  background-color: aliceblue;
+  background-color: #222;
+  color: white;
   outline: none;
-  border: 2px solid black;
+  border: 2px solid white;
   padding: 4px;
   margin: 2px;
+}
+
+.comments {
+  list-style-type: none;
 }

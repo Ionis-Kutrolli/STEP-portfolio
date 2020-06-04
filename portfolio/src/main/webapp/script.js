@@ -82,7 +82,7 @@ function removeCommentsFromDOM(){
  */
 function createElementList(text) {
   const liElement = document.createElement('li');
-
+	liElement.classList.add("comments");
   liElement.innerText = text;
   return liElement;
 }
