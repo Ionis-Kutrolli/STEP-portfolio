@@ -57,9 +57,7 @@ function addCommentsToDOM(comments) {
     const commentListElement = document.getElementById('comment-container');
     comments.forEach((comment) => {
       var time = new Date(comment.timestamp);
-      var commentDisplay = time.toLocaleString() + ":\t" + comment.user +  ": " + comment.comment;
-      commentListElement.appendChild(createElementList(commentDisplay));
-
+      commentListElement.appendChild(createCommentElementList(comment.user, time.toLocaleString() ,comment.comment));
     });
 }
 
@@ -80,9 +78,23 @@ function removeCommentsFromDOM(){
  * Creates an list element with prespecified text
  * @param {string} text Text to be put in the list element
  */
-function createElementList(text) {
+function createCommentElementList(user, time, text) {
   const liElement = document.createElement('li');
-	liElement.classList.add("comments");
-  liElement.innerText = text;
+  const innerDiv = document.createElement('div');
+  const userElement = document.createElement('p');
+  const timeElement = document.createElement('p');
+  const commentTextElement = document.createElement('p');
+
+  liElement.classList.add("comments");
+  innerDiv.classList.add("comment-div");
+
+  userElement.innerText = user;
+  timeElement.innerText = time;
+  commentTextElement.innerText = text;
+
+  innerDiv.appendChild(userElement);
+  innerDiv.appendChild(commentTextElement);
+  innerDiv.appendChild(timeElement);
+  liElement.appendChild(innerDiv);
   return liElement;
 }
