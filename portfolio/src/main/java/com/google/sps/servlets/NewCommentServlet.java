@@ -18,6 +18,10 @@ public class NewCommentServlet extends HttpServlet {
     String comment = request.getParameter("comment");
     String user = request.getParameter("user");
 
+    if (user == "") { 
+      user = "Anonymous";
+    }
+
     long timestamp = System.currentTimeMillis();
 
     Entity commentEntity = new Entity("Comment");

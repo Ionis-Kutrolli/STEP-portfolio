@@ -77,12 +77,11 @@
     </div>
     <div class="comment-section">
       <div class="white-outline">
-        <div id="comment-container"></div>
         <div id="commenting-section">
           <p>Leave a comment:</p>
-          <span class="textarea-comment" id="textarea-user" contenteditable></span>
+          <span class="textarea-user" id="textarea-user" contenteditable></span>
           <span class="textarea-comment" id="textarea-comment" contenteditable></span>
-          <button type="submit" onclick="submitComment()">Submit</button>
+          <button class="submit-button" onclick="submitComment()">Submit</button>
         </div>
         </form>
         <form action="/comment" method="POST">
@@ -90,6 +89,7 @@
         </form>
         <button class="delete-button" onclick="deleteComments()">Delete</button>
       </div>
+      <div id="comment-container"></div>
     </div>
   </body>
 </html>

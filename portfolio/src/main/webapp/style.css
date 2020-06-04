@@ -131,58 +131,43 @@ h3, h4, h5, p {
   border: 2px solid white;
 }
 
-.textarea-comment {
-  display: block;
-  width: 100%;
+.textarea-comment, .textarea-user {
+  display: inline-block;
+  width: 60%;
   background-color: #222;
   border: 2px solid white;
   overflow: hidden;
-  min-height: 40px;
+  min-height: 20px;
   line-height: 20px;
-}
-
-.textarea-comment:focus {
-  outline: none;
-  border: 2px solid #555;
-  background-color: white;
-  color: black;
-}
-
-
-input[type=text] {
-  width: 10vw;
-  resize: both;
-  background-color: #222;
-  color: white;
-  box-sizing: border-box;
-  outline: none;
-  border: 2px solid white;
-  padding: 3px;
   -webkit-transition: 0.5s;
   transition: 0.5s;
 }
 
-input[type=text]:active {
-  width: auto;
-} 
+.textarea-comment:empty::before {
+  content: "Please enter a comment.";
+  color:white;
+}
 
-input[type=text]:focus {
+.textarea-comment:focus, .textarea-user:focus{
+  outline: none;
   border: 2px solid #555;
   background-color: white;
   color: black;
 }
 
-input[type=text]::placeholder {
+.textarea-user {
+  width: 20%;
+  max-height: 20px;
+}
+
+.textarea-user:empty::before {
+  content: "Name. (Optional)";
   color: white;
 }
 
-input[type=submit] {
-  background-color: #222;
-  color: white;
-  outline: none;
-  border: 2px solid white;
-  padding: 4px;
-  margin: 2px;
+.submit-button {
+  position: relative;
+  top: -7px;
 }
 
 .comment-section {

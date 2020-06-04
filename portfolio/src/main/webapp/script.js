@@ -56,9 +56,10 @@ function submitComment() {
   params.append('user', usernameElement.innerText);
   params.append('comment', commentElement.innerText);
 
-  fetch('/new-comment', {method: 'POST', body: params});
+  fetch('/new-comment', {method: 'POST', body: params})
+    .then(removeCommentsFromDOM)
+    .then(loadComments);
 }
-
 
 /** Fetches the comments from the servlet */
 function loadComments() {
@@ -70,7 +71,9 @@ function addCommentsToDOM(comments) {
     const commentListElement = document.getElementById('comment-container');
     comments.forEach((comment) => {
       var time = new Date(comment.timestamp);
-      commentListElement.appendChild(createCommentElementList(comment.user, time.toLocaleString() ,comment.comment));
+      commentListElement.appendChild(createCommentElementList(comment.user,
+       time.toLocaleString(), 
+       comment.comment));
     });
 }
 
