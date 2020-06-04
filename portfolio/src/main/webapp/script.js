@@ -47,6 +47,19 @@ function googleTranslateElementInit() {
     'google_translate_element');
 }
 
+/** submits the user comment to servlet  */
+function submitComment() {
+  const commentElement = document.getElementById('textarea-comment');
+  const usernameElement = document.getElementById('textarea-user');
+  const params = new URLSearchParams();
+
+  params.append('user', usernameElement.innerText);
+  params.append('comment', commentElement.innerText);
+
+  fetch('/new-comment', {method: 'POST', body: params});
+}
+
+
 /** Fetches the comments from the servlet */
 function loadComments() {
   fetch('/comment').then(response => response.json()).then(addCommentsToDOM);
