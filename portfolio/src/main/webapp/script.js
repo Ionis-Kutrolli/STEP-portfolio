@@ -53,10 +53,23 @@ function submitComment() {
   const usernameElement = document.getElementById('textarea-user');
   const params = new URLSearchParams();
 
-  params.append('user', usernameElement.innerText);
+  var username = usernameElement.innerText;
+  if (username === ''){
+    username = 'Anonymous';
+  }
+  params.append('user', username);
   params.append('comment', commentElement.innerText);
 
   fetch('/new-comment', {method: 'POST', body: params})
+    .then(removeCommentsFromDOM)
+    .then(loadComments);
+}
+
+function changeMaxComments(maxNum) {
+  const params = new URLSearchParams();
+  params.append('max-comments', maxNum);
+
+  fetch('/comment', {method: 'POST', body: params})
     .then(removeCommentsFromDOM)
     .then(loadComments);
 }
@@ -103,14 +116,17 @@ function createCommentElementList(user, time, text) {
 
   liElement.classList.add("comments");
   innerDiv.classList.add("comment-div");
+  userElement.classList.add('user-text');
+  timeElement.classList.add('time-text');
+  commentTextElement.classList.add('comment-text')
 
-  userElement.innerText = user;
+  userElement.innerText = user + ':';
   timeElement.innerText = time;
   commentTextElement.innerText = text;
 
+  innerDiv.appendChild(timeElement);
   innerDiv.appendChild(userElement);
   innerDiv.appendChild(commentTextElement);
-  innerDiv.appendChild(timeElement);
   liElement.appendChild(innerDiv);
   return liElement;
 }
