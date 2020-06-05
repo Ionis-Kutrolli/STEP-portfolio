@@ -125,12 +125,14 @@ function createCommentElementList(comment) {
   userElement.classList.add('user-text');
   timeElement.classList.add('time-text');
   commentTextElement.classList.add('comment-text')
+  deleteCommentButton.classList.add('delete-button');
+  deleteCommentButton.id = 'indiv-delet-button';
 
   userElement.innerText = comment.user + ':';
   var timezone = new Date(comment.timestamp);
   timeElement.innerText = timezone.toLocaleString();
   commentTextElement.innerText = comment.comment;
-  deleteCommentButton.innerText = 'Delete';
+  deleteCommentButton.innerText = 'x';
   deleteCommentButton.addEventListener('click', () => {
     deleteComment(comment);
 

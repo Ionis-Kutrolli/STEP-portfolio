@@ -193,6 +193,13 @@ h3, h4, h5, p {
   top: -10px;
 }
 
+#indiv-delet-button {
+  padding: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  top: -15px;
+}
+
 #commenting-section p {
   font-family: 'Roboto Mono', monospace;
 }
