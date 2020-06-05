@@ -51,12 +51,7 @@ public class DataServlet extends HttpServlet {
     for (int i = 0; (i < numCommentsMax && resultsIterator.hasNext()); i++){
       Entity entity = resultsIterator.next();
 
-      long id = entity.getKey().getId();
-      long timestamp = (long) entity.getProperty("timestamp");
-      String userComment = (String) entity.getProperty("comment");
-      String user = (String) entity.getProperty("user"); // Maybe null if no user
-      
-      Comment comment = new Comment(id, user, userComment, timestamp);
+      Comment comment = Comment.fromEntity(entity);
       comments.add(comment);
     }
 
