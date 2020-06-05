@@ -35,31 +35,34 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
+  private int numCommentsMax = 5;
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Retreive comments stored by the database
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
-    int maxComments = getMaxComments(request);
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     List<Comment> comments = new ArrayList<>();
-    for(Entity entity : results.asIterable()) {
+    Iterator<Entity> resultsIterator = results.asIterator();
+    for (int i = 0; (i < numCommentsMax && resultsIterator.hasNext()); i++){
+      Entity entity = resultsIterator.next();
+
       long id = entity.getKey().getId();
       long timestamp = (long) entity.getProperty("timestamp");
       String userComment = (String) entity.getProperty("comment");
       String user = (String) entity.getProperty("user"); // Maybe null if no user
 
-      if (user == null) {
+      if (user == "") {
         user = "Anonymous";
       }
-
+      
       Comment comment = new Comment(id, user, userComment, timestamp);
       comments.add(comment);
     }
-    
+
     //Json conversion
     Gson gson = new Gson();
     String json = gson.toJson(comments);
@@ -69,19 +72,15 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //Get input from form 
-    String comment = request.getParameter("comment");
-    long timestamp = System.currentTimeMillis();
+    int maxComments = getMaxComments(request);
 
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("comment", comment);
-    commentEntity.setProperty("timestamp", timestamp);
+    if (maxComments == -1) {
+      response.setContentType("text/html");
+      response.getWriter().println("Please enter integer between 5 and 10.");
+      return;
+    }
 
-    // TODO: setup non null users
-    commentEntity.setProperty("user", null);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
+    numCommentsMax = maxComments;
 
     response.sendRedirect("/index.html");
   }

@@ -75,13 +75,20 @@
       <a href="https://github.com/Ionis-Kutrolli" class="footer_link">GitHub</a>
       <a target="_blank" href="https://drive.google.com/file/d/1V4XfRCEwrSS6Ocv2jBolTFDsGsVqW3rx/view?usp=sharing" class="footer_link">Resume</a>
     </div>
-    <div id="comment-container"></div>
-    <form action="/comment" method="POST">
-      <p>Leave a comment:</p>
-      <input type="number" name="max-comments" min="5" max="10" value="5">
-      <input type="text" name="comment">
-      <input type="submit" />
-    </form>
-      <button class="delete-button" onclick="deleteComments()">Delete</button>
+    <div class="comment-section">
+      <div class="white-outline">
+        <div id="comment-container"></div>
+        <form action="/new-comment" method="POST">
+          <p>Leave a comment:</p>
+          <input type="text" name="user" placeholder="Enter name. (Optional)">
+          <input type="text" name="comment" placeholder="Enter a comment.">
+          <input type="submit" />
+        </form>
+        <form action="/comment" method="POST">
+          <input type="number" name="max-comments" min="5" max="10" value="5">
+        </form>
+        <button class="delete-button" onclick="deleteComments()">Delete</button>
+      </div>
+    </div>
   </body>
 </html>
