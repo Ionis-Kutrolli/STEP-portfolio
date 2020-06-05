@@ -41,6 +41,8 @@ const PARAM_COMMENT = 'comment';
 const PARAM_ID = 'id';
 /** Parameter id for Max Comment */
 const PARAM_MAX_COMMENT = 'max-comments';
+/** Parameter id for page number */
+const PARAM_PAGE = 'page';
 /** Fetch new comment servlet */
 const FETCH_NEW_COMMENT = '/new-comment';
 /** Fetch comment servlet */
@@ -148,8 +150,8 @@ function incrementPage(num) {
   }
 
   const params = new URLSearchParams();
-  params.append('page', pageNum);
-  fetch('/comment', { method: SERVLET_METHOD_POST, body: params})
+  params.append(PARAM_PAGE, pageNum);
+  fetch(FETCH_COMMENT, { method: SERVLET_METHOD_POST, body: params})
     .then(removeCommentsFromDOM)
     .then(loadComments);
 }

@@ -54,6 +54,7 @@ public class DataServlet extends HttpServlet {
     int maxPageNum = (int)Math.ceil((double)numComments/(double)numCommentsMax) - 1;
     int commentDisplayOffset = pageNum * numCommentsMax;
 
+    // Goes through the comments and adds the ones that should be displayed to comments list
     List<Comment> comments = new ArrayList<>();
     Iterator<Entity> resultsIterator = results.asIterator();
     for (int i = 0; (i < numCommentsMax * (pageNum+1) && resultsIterator.hasNext()); i++){
