@@ -30,7 +30,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-
+import com.google.common.base.*;
 
 /** Servlet that stores comments so they persist and displays retreives them to be displayed */
 @WebServlet("/comment")
@@ -83,7 +83,7 @@ public class DataServlet extends HttpServlet {
       return -1;
     }
 
-    // Preconditions.checkArguments(maxComments == -1 || maxComments < 5 || maxComments > 10);
+    Preconditions.checkArgument(maxComments < 5 || maxComments > 10, "%s: not a valid value.");
 
     return maxComments;
   }
