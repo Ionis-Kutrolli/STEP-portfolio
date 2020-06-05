@@ -13,8 +13,7 @@
 // limitations under the License.
 
 
-//            Constants             //
-
+//              Constants              //
 /** HTML class name for project images */
 const CLASS_PROJECT_IMGS = 'project_imgs';
 /** HTML class name for rock climning elements */
@@ -65,6 +64,9 @@ const HTML_ELEMENT_DIV = 'div';
 const HTML_ELEMENT_P = 'p';
 const HTML_ELEMENT_BUTTON = 'button';
 
+/** Current Page Number */
+let pageNum = 0;
+let maxPages;
 
 /**
  * Changes the image that is displaying corresponds to the id specified.
@@ -130,12 +132,33 @@ function changeMaxComments(maxNum) {
 
 /** Fetches the comments from the servlet */
 function loadComments() {
-  fetch(FETCH_COMMENT).then(response => response.json()).then(addCommentsToDOM);
+  fetch(FETCH_COMMENT).then(response => response.clone().json())
+    .then(data => {
+      addCommentsToDOM(data.comments);
+      maxPages = data.maxPages;
+    });
+}
+
+function incrementPage(num) {
+  pageNum += num;
+  if (pageNum > maxPages) {
+    pageNum = maxPages;
+  } else if (pageNum < 0) {
+    pageNum = 0;
+  }
+
+  const params = new URLSearchParams();
+  params.append('page', pageNum);
+  fetch('/comment', { method: SERVLET_METHOD_POST, body: params})
+    .then(removeCommentsFromDOM)
+    .then(loadComments);
 }
 
 /** Adds comments with user name to DOM. */
 function addCommentsToDOM(comments) {
-    const commentListElement = document.getElementById(ELEMENT_COMMENT_CONTAINER);
+    const commentListElement = document
+      .getElementById(ELEMENT_COMMENT_CONTAINER);
+
     comments.forEach((comment) => {
       var time = new Date(comment.timestamp);
       commentListElement.appendChild(createCommentElementList(comment));
@@ -144,12 +167,14 @@ function addCommentsToDOM(comments) {
 
 /** Sends request to delete comments from database */
 function deleteComments() {
-  fetch(FETCH_DELETE_COMMENTS, {method: SERVLET_METHOD_POST}).then(removeCommentsFromDOM);
+  fetch(FETCH_DELETE_COMMENTS, {method: SERVLET_METHOD_POST})
+    .then(removeCommentsFromDOM);
 }
 
 /** Deletes the elements from the DOM */
 function removeCommentsFromDOM(){
-  const commentListElement = document.getElementById(ELEMENT_COMMENT_CONTAINER);
+  const commentListElement = document
+    .getElementById(ELEMENT_COMMENT_CONTAINER);
   while (commentListElement.lastElementChild) {
     commentListElement.removeChild(commentListElement.lastElementChild);
   }
@@ -158,7 +183,7 @@ function removeCommentsFromDOM(){
 /** Deletes the specified comment */
 function deleteComment(comment) {
   const params = new URLSearchParams();
-  params.append('id', comment.id);
+  params.append(PARAM_ID, comment.id);
   fetch(FETCH_DELETE_COMMENT, {method: SERVLET_METHOD_POST, body: params});
 }
 

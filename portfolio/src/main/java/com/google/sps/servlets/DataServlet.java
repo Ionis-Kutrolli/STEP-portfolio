@@ -30,13 +30,17 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.common.base.*;
+import java.lang.Math;
 
 /** Servlet that stores comments so they persist and displays retreives them to be displayed */
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
   private int numCommentsMax = 5;
+  private int maxPageNum;
+  private int pageNum = 0;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,27 +50,36 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    int numComments = results.countEntities(FetchOptions.Builder.withDefaults());
+    int maxPageNum = (int)Math.ceil((double)numComments/(double)numCommentsMax) - 1;
+    int commentDisplayOffset = pageNum * numCommentsMax;
+
     List<Comment> comments = new ArrayList<>();
     Iterator<Entity> resultsIterator = results.asIterator();
-    for (int i = 0; (i < numCommentsMax && resultsIterator.hasNext()); i++){
+    for (int i = 0; (i < numCommentsMax * (pageNum+1) && resultsIterator.hasNext()); i++){
       Entity entity = resultsIterator.next();
-
-      Comment comment = Comment.fromEntity(entity);
-      comments.add(comment);
+      if (i >= commentDisplayOffset) {
+        Comment comment = Comment.fromEntity(entity);
+        comments.add(comment);
+      }
     }
+
+    GetRequestData data = new GetRequestData(comments, maxPageNum);
 
     //Json conversion
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
+    String json = gson.toJson(data);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    int maxComments = getMaxComments(request);
-
-    numCommentsMax = maxComments;
+    if (request.getParameter("max-comments") != null){
+      numCommentsMax = getMaxComments(request);
+    } else {
+      pageNum = getPage(request);
+    }
 
     response.sendRedirect("/index.html");
   }
@@ -83,9 +96,37 @@ public class DataServlet extends HttpServlet {
       return -1;
     }
 
-    Preconditions.checkArgument(maxComments < 5 || maxComments > 10, "%s: not a valid value.");
+    Preconditions.checkArgument(maxComments == 5 || maxComments == 10, "%s: not a valid value.");
 
     return maxComments;
   }
 
+  /** Retreives the Page parameter and converts it to int */
+  public int getPage(HttpServletRequest request) {
+    String pageString = request.getParameter("page");
+
+    int page;
+    try {
+      page = Integer.parseInt(pageString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + pageString);
+      return -1;
+    }
+
+    Preconditions.checkArgument(page >=0 || page <= maxPageNum, "%s: not a valid value.");
+
+    return page;
+  }
+
+}
+
+/** Class that stores information requested in get requests */
+class GetRequestData {
+  List<Comment> comments;
+  int maxPages;
+
+  public GetRequestData(List<Comment> comments, int maxPages) {
+    this.comments = comments;
+    this.maxPages = maxPages;
+  }
 }
