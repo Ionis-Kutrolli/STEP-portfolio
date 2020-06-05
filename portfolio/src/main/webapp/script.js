@@ -84,9 +84,7 @@ function addCommentsToDOM(comments) {
     const commentListElement = document.getElementById('comment-container');
     comments.forEach((comment) => {
       var time = new Date(comment.timestamp);
-      commentListElement.appendChild(createCommentElementList(comment.user,
-       time.toLocaleString(), 
-       comment.comment));
+      commentListElement.appendChild(createCommentElementList(comment));
     });
 }
 
@@ -103,16 +101,24 @@ function removeCommentsFromDOM(){
   }
 }
 
+/** Deletes the specified comment */
+function deleteComment(comment) {
+  const params = new URLSearchParams();
+  params.append('id', comment.id);
+  fetch('/delete-comment', {method: 'POST', body: params});
+}
+
 /**
  * Creates an list element with prespecified text
  * @param {string} text Text to be put in the list element
  */
-function createCommentElementList(user, time, text) {
+function createCommentElementList(comment) {
   const liElement = document.createElement('li');
   const innerDiv = document.createElement('div');
   const userElement = document.createElement('p');
   const timeElement = document.createElement('p');
   const commentTextElement = document.createElement('p');
+  const deleteCommentButton = document.createElement('button');
 
   liElement.classList.add("comments");
   innerDiv.classList.add("comment-div");
@@ -120,10 +126,19 @@ function createCommentElementList(user, time, text) {
   timeElement.classList.add('time-text');
   commentTextElement.classList.add('comment-text')
 
-  userElement.innerText = user + ':';
-  timeElement.innerText = time;
-  commentTextElement.innerText = text;
+  userElement.innerText = comment.user + ':';
+  var timezone = new Date(comment.timestamp);
+  timeElement.innerText = timezone.toLocaleString();
+  commentTextElement.innerText = comment.comment;
+  deleteCommentButton.innerText = 'Delete';
+  deleteCommentButton.addEventListener('click', () => {
+    deleteComment(comment);
 
+    //Remove the element holding the comment
+    liElement.remove();
+  })
+
+  innerDiv.appendChild(deleteCommentButton);
   innerDiv.appendChild(timeElement);
   innerDiv.appendChild(userElement);
   innerDiv.appendChild(commentTextElement);
