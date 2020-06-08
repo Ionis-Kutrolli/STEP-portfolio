@@ -67,8 +67,8 @@ const HTML_ELEMENT_P = 'p';
 const HTML_ELEMENT_BUTTON = 'button';
 
 /** Current Page Number */
-let pageNum = 0;
-let maxPages;
+let pageNumber = 0;
+let maximumPages;
 
 /**
  * Changes the image that is displaying corresponds to the id specified.
@@ -127,10 +127,12 @@ function submitComment() {
 
 }
 
-/** Sends new maximum number of comments to display */
-function changeMaxComments(maxNum) {
+/** Sends new maximum number of comments to display 
+ *  @param {number} maximumNumber the new number of maximum comments on a page
+ */
+function changeMaxComments(maximumNumber) {
   const params = new URLSearchParams();
-  params.append(PARAM_MAX_COMMENT, maxNum);
+  params.append(PARAM_MAX_COMMENT, maximumNumber);
 
   fetch(FETCH_COMMENT, {method: SERVLET_METHOD_POST, body: params})
     .then(removeCommentsFromDOM)
@@ -142,21 +144,24 @@ function loadComments() {
   fetch(FETCH_COMMENT).then(response => response.clone().json())
     .then(data => {
       addCommentsToDOM(data.comments);
-      maxPages = data.maxPages;
+      maximumPages = data.maximumPages;
     });
 }
 
-/** Sends the server a fetch to change the page of comments displayed */
-function incrementPage(num) {
-  pageNum += num;
-  if (pageNum > maxPages) {
-    pageNum = maxPages;
-  } else if (pageNum < 0) {
-    pageNum = 0;
+/** Increment the page by 1 to next page or -1 to previous page and 
+ *  fetches new comments 
+ *  @param {number} increment number to increment the page number by
+ */
+function incrementPage(increment) {
+  pageNumber += increment;
+  if (pageNumber > maximumPages) {
+    pageNumber = maximumPages;
+  } else if (pageNumber < 0) {
+    pageNumber = 0;
   }
 
   const params = new URLSearchParams();
-  params.append(PARAM_PAGE, pageNum);
+  params.append(PARAM_PAGE, pageNumber);
   fetch(FETCH_COMMENT, { method: SERVLET_METHOD_POST, body: params})
     .then(removeCommentsFromDOM)
     .then(loadComments);
@@ -197,7 +202,8 @@ function deleteComment(comment) {
 
 /**
  * Creates an list element with prespecified text
- * @param {string} text Text to be put in the list element
+ * @param {object} comment Comment object holding username, comment text 
+ *   and timestamp
  */
 function createCommentElementList(comment) {
   const liElement = document.createElement(HTML_ELEMENT_LI);

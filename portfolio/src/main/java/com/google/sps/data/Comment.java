@@ -28,10 +28,10 @@ public class Comment {
    */
   public static Comment fromEntity(Entity entity) {
     long id = entity.getKey().getId();
-      long timestamp = (long) entity.getProperty("timestamp");
-      String userComment = (String) entity.getProperty("comment");
-      String user = (String) entity.getProperty("user"); // Maybe null if no user
+    long timestamp = (long) entity.getProperty("timestamp");
+    String userComment = (String) entity.getProperty("comment");
+    String user = (String) entity.getProperty("user"); // Maybe null if no user
       
-      return new Comment(id, user, userComment, timestamp);
+    return new Comment(id, user, userComment, timestamp);
   }
 }
