@@ -47,6 +47,33 @@ function googleTranslateElementInit() {
     'google_translate_element');
 }
 
+/** submits the user comment to servlet  */
+function submitComment() {
+  const commentElement = document.getElementById('textarea-comment');
+  const usernameElement = document.getElementById('textarea-user');
+  const params = new URLSearchParams();
+
+  var username = usernameElement.innerText;
+  if (username === ''){
+    username = 'Anonymous';
+  }
+  params.append('user', username);
+  params.append('comment', commentElement.innerText);
+
+  fetch('/new-comment', {method: 'POST', body: params})
+    .then(removeCommentsFromDOM)
+    .then(loadComments);
+}
+
+function changeMaxComments(maxNum) {
+  const params = new URLSearchParams();
+  params.append('max-comments', maxNum);
+
+  fetch('/comment', {method: 'POST', body: params})
+    .then(removeCommentsFromDOM)
+    .then(loadComments);
+}
+
 /** Fetches the comments from the servlet */
 function loadComments() {
   fetch('/comment').then(response => response.json()).then(addCommentsToDOM);
@@ -57,9 +84,9 @@ function addCommentsToDOM(comments) {
     const commentListElement = document.getElementById('comment-container');
     comments.forEach((comment) => {
       var time = new Date(comment.timestamp);
-      var commentDisplay = time.toLocaleString() + ":\t" + comment.user +  ": " + comment.comment;
-      commentListElement.appendChild(createElementList(commentDisplay));
-
+      commentListElement.appendChild(createCommentElementList(comment.user,
+       time.toLocaleString(), 
+       comment.comment));
     });
 }
 
@@ -80,9 +107,26 @@ function removeCommentsFromDOM(){
  * Creates an list element with prespecified text
  * @param {string} text Text to be put in the list element
  */
-function createElementList(text) {
+function createCommentElementList(user, time, text) {
   const liElement = document.createElement('li');
+  const innerDiv = document.createElement('div');
+  const userElement = document.createElement('p');
+  const timeElement = document.createElement('p');
+  const commentTextElement = document.createElement('p');
 
-  liElement.innerText = text;
+  liElement.classList.add("comments");
+  innerDiv.classList.add("comment-div");
+  userElement.classList.add('user-text');
+  timeElement.classList.add('time-text');
+  commentTextElement.classList.add('comment-text')
+
+  userElement.innerText = user + ':';
+  timeElement.innerText = time;
+  commentTextElement.innerText = text;
+
+  innerDiv.appendChild(timeElement);
+  innerDiv.appendChild(userElement);
+  innerDiv.appendChild(commentTextElement);
+  liElement.appendChild(innerDiv);
   return liElement;
 }

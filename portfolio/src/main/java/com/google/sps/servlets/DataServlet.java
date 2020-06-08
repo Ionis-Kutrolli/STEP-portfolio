@@ -31,6 +31,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
+
 /** Servlet that stores comments so they persist and displays retreives them to be displayed */
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
@@ -54,10 +55,6 @@ public class DataServlet extends HttpServlet {
       long timestamp = (long) entity.getProperty("timestamp");
       String userComment = (String) entity.getProperty("comment");
       String user = (String) entity.getProperty("user"); // Maybe null if no user
-
-      if (user == "") {
-        user = "Anonymous";
-      }
       
       Comment comment = new Comment(id, user, userComment, timestamp);
       comments.add(comment);
@@ -73,12 +70,6 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     int maxComments = getMaxComments(request);
-
-    if (maxComments == -1) {
-      response.setContentType("text/html");
-      response.getWriter().println("Please enter integer between 5 and 10.");
-      return;
-    }
 
     numCommentsMax = maxComments;
 
@@ -96,6 +87,8 @@ public class DataServlet extends HttpServlet {
       System.err.println("Could not convert to int: " + maxCommentsString);
       return -1;
     }
+
+    // Preconditions.checkArguments(maxComments == -1 || maxComments < 5 || maxComments > 10);
 
     return maxComments;
   }

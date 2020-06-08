@@ -1,5 +1,5 @@
 #content {
-  margin-left: auto;
+  margin-left: 30vw;
   margin-right: auto;
   text-align: justify;
   width: 650px;
@@ -78,8 +78,6 @@ h3, h4, h5, p {
   width: 700px;
   padding: 20px;
   border: 10px solid;
-  margin-left: auto;
-  margin-right: auto;
   clip-path:
   polygon(
     12.5% 5%,
@@ -133,31 +131,100 @@ h3, h4, h5, p {
   border: 2px solid white;
 }
 
-input[type=text] {
-  width: 10vw;
+.textarea-comment, .textarea-user {
+  display: inline-block;
+  width: 60%;
   background-color: #222;
-  box-sizing: border-box;
-  outline: none;
   border: 2px solid white;
-  padding: 3px;
+  overflow: hidden;
+  min-height: 20px;
+  line-height: 20px;
+  font-family: 'Roboto Slab', serif;
   -webkit-transition: 0.5s;
   transition: 0.5s;
 }
 
-input[type=text]:focus {
-  border: 2px solid #555;
-  background-color: white;
-  width: 50vw;
+.textarea-comment:empty::before {
+  content: "Please enter a comment.";
+  color:white;
 }
 
-input[type=text]::placeholder {
+.textarea-comment:focus, .textarea-user:focus{
+  outline: none;
+  border: 2px solid #555;
+  background-color: white;
+  color: black;
+}
+
+.textarea-user {
+  width: 20%;
+  max-height: 20px;
+}
+
+.textarea-user:empty::before {
+  content: "Name. (Optional)";
   color: white;
 }
 
-input[type=submit] {
-  background-color: aliceblue;
+.submit-button {
+  position: relative;
+  top: -7px;
+  background-color: cadetblue;
+  border: solid cadetblue;
+  border-radius: 5px;
   outline: none;
-  border: 2px solid black;
-  padding: 4px;
-  margin: 2px;
+  padding: 5px;
+}
+
+.comment-section {
+  width: 700px;
+  margin-left: 31vw;
+  margin-right: auto;
+}
+
+.delete-button {
+  position: relative;
+  float: right;
+  padding: 5px;
+  border: solid tomato;
+  outline: none;
+  background-color: tomato;
+  border-radius: 5px;
+  top: -10px;
+}
+
+#commenting-section p {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.max-comment {
+  display: inline-block;
+}
+
+.max-comment:hover {
+  text-decoration: underline;
+}
+
+.comments {
+  list-style-type: none;
+}
+
+.comment-div {
+  border-bottom: 1px solid #333;
+  font-family: 'Roboto Slab', serif;
+}
+
+.user-text {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.time-text {
+  font-size: 10px;
+  color: #444;
+  float: right;
+}
+
+.comment-text {
+  margin-top: 5px;
 }
