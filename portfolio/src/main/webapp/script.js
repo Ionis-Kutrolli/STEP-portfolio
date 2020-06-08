@@ -118,11 +118,16 @@ function submitComment() {
   params.append(PARAM_USER, username);
   params.append(PARAM_COMMENT, commentElement.innerText);
 
+  usernameElement.innerText = '';
+  commentElement.innerText = '';
+
   fetch(FETCH_NEW_COMMENT, {method: SERVLET_METHOD_POST, body: params})
     .then(removeCommentsFromDOM)
     .then(loadComments);
+
 }
 
+/** Sends new maximum number of comments to display */
 function changeMaxComments(maxNum) {
   const params = new URLSearchParams();
   params.append(PARAM_MAX_COMMENT, maxNum);
@@ -141,6 +146,7 @@ function loadComments() {
     });
 }
 
+/** Sends the server a fetch to change the page of comments displayed */
 function incrementPage(num) {
   pageNum += num;
   if (pageNum > maxPages) {
