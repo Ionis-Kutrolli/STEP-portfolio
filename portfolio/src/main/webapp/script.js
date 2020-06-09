@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 //              Constants              //
 /** HTML class name for project images */
 const CLASS_PROJECT_IMGS = 'project_imgs';
@@ -27,12 +26,10 @@ const STYLE_NONE = 'none';
 /** Language id for Albanian */
 const LANGUAGE_ALBANIAN = 'sq';
 
-/** Fetches the link to allow users to login */
-function getUserAuthentication() {
-  fetch('/auth').then(response => response.text())
-    .then(html => {
-      document.body.insertAdjacentHTML('beforebegin', html);
-    })
+/** Function that loads comments and user authentication */
+window.onload = function () {
+  this.loadComments();
+  this.getUserAuthentication();
 }
 
 /**
@@ -42,7 +39,7 @@ function getUserAuthentication() {
 function displayImage(id) {
   var elements = document.getElementsByClassName(CLASS_PROJECT_IMGS);
   for (let element of elements) {
-    if (element.id === id){
+    if (element.id === id) {
       element.style.display = STYLE_BLOCK;
     } else {
       element.style.display = STYLE_NONE;
@@ -65,7 +62,9 @@ function displayRockClimbingVideos() {
  */
 function googleTranslateElementInit() {
   new google.translate.TranslateElement(
-    { pageLanguage: LANGUAGE_ALBANIAN, 
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 
+    {
+      pageLanguage: LANGUAGE_ALBANIAN,
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    },
     ELEMENT_GOOGLE_TRANSLATE);
 }

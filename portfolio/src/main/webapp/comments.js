@@ -43,12 +43,6 @@ const HTML_ELEMENT_BUTTON = 'button';
 let pageNumber = 0;
 let maximumPages;
 
-window.onload = function() {
-  this.loadComments();
-  this.getUserAuthentication();
-  
-}
-
 /** submits the user comment to servlet  */
 function submitComment() {
   const commentElement = document.getElementById(ELEMENT_TEXTAREA_COMMENT);
@@ -56,7 +50,7 @@ function submitComment() {
   const params = new URLSearchParams();
 
   var username = usernameElement.innerText;
-  if (username === ''){
+  if (username === '') {
     username = 'Anonymous';
   }
   params.append(PARAM_USER, username);
@@ -65,7 +59,7 @@ function submitComment() {
   usernameElement.innerText = '';
   commentElement.innerText = '';
 
-  fetch(FETCH_NEW_COMMENT, {method: SERVLET_METHOD_POST, body: params})
+  fetch(FETCH_NEW_COMMENT, { method: SERVLET_METHOD_POST, body: params })
     .then(removeCommentsFromDOM)
     .then(loadComments);
 }
@@ -77,7 +71,7 @@ function changeMaxComments(maximumNumber) {
   const params = new URLSearchParams();
   params.append(PARAM_MAX_COMMENT, maximumNumber);
 
-  fetch(FETCH_COMMENT, {method: SERVLET_METHOD_POST, body: params})
+  fetch(FETCH_COMMENT, { method: SERVLET_METHOD_POST, body: params })
     .then(removeCommentsFromDOM)
     .then(loadComments);
 }
@@ -101,34 +95,34 @@ function incrementPage(increment) {
     pageNumber = maximumPages;
   } else if (pageNumber < 0) {
     pageNumber = 0;
+  } else {
+    const params = new URLSearchParams();
+    params.append(PARAM_PAGE, pageNumber);
+    fetch(FETCH_COMMENT, { method: SERVLET_METHOD_POST, body: params })
+      .then(removeCommentsFromDOM)
+      .then(loadComments);
   }
-
-  const params = new URLSearchParams();
-  params.append(PARAM_PAGE, pageNumber);
-  fetch(FETCH_COMMENT, { method: SERVLET_METHOD_POST, body: params})
-    .then(removeCommentsFromDOM)
-    .then(loadComments);
 }
 
 /** Adds comments with user name to DOM. */
 function addCommentsToDOM(comments) {
-    const commentListElement = document
-      .getElementById(ELEMENT_COMMENT_CONTAINER);
+  const commentListElement = document
+    .getElementById(ELEMENT_COMMENT_CONTAINER);
 
-    comments.forEach((comment) => {
-      var time = new Date(comment.timestamp);
-      commentListElement.appendChild(createCommentElementList(comment));
-    });
+  comments.forEach((comment) => {
+    var time = new Date(comment.timestamp);
+    commentListElement.appendChild(createCommentElementList(comment));
+  });
 }
 
 /** Sends request to delete comments from database */
 function deleteComments() {
-  fetch(FETCH_DELETE_COMMENTS, {method: SERVLET_METHOD_POST})
+  fetch(FETCH_DELETE_COMMENTS, { method: SERVLET_METHOD_POST })
     .then(removeCommentsFromDOM);
 }
 
 /** Deletes the elements from the DOM */
-function removeCommentsFromDOM(){
+function removeCommentsFromDOM() {
   const commentListElement = document
     .getElementById(ELEMENT_COMMENT_CONTAINER);
   while (commentListElement.lastElementChild) {
@@ -140,7 +134,7 @@ function removeCommentsFromDOM(){
 function deleteComment(comment) {
   const params = new URLSearchParams();
   params.append(PARAM_ID, comment.id);
-  fetch(FETCH_DELETE_COMMENT, {method: SERVLET_METHOD_POST, body: params});
+  fetch(FETCH_DELETE_COMMENT, { method: SERVLET_METHOD_POST, body: params });
 }
 
 /**

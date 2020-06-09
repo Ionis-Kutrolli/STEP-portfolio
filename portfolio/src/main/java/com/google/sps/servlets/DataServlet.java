@@ -34,7 +34,10 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.common.base.*;
 import java.lang.Math;
 
-/** Servlet that stores comments so they persist and displays retreives them to be displayed */
+/**
+ * Servlet that stores comments so they persist and displays retreives them to
+ * be displayed
+ */
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
@@ -51,14 +54,15 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     int numberComments = results.countEntities(FetchOptions.Builder.withDefaults());
-    int maximumPageNumber = (int)Math.ceil((double)numberComments/maximumCommentsPerPage) - 1;
+    int maximumPageNumber = (int) Math.ceil((double) numberComments / maximumCommentsPerPage) - 1;
     int commentDisplayOffset = pageNumber * maximumCommentsPerPage;
-    int lastCommentDisplayableIndex = maximumCommentsPerPage * (pageNumber+1);
+    int lastCommentDisplayableIndex = maximumCommentsPerPage * (pageNumber + 1);
 
-    // Goes through the comments and adds the ones that should be displayed to comments list
+    // Goes through the comments and adds the ones that should be displayed to
+    // comments list
     List<Comment> comments = new ArrayList<>();
     Iterator<Entity> resultsIterator = results.asIterator();
-    for (int i = 0; (i < lastCommentDisplayableIndex && resultsIterator.hasNext()); i++){
+    for (int i = 0; (i < lastCommentDisplayableIndex && resultsIterator.hasNext()); i++) {
       Entity entity = resultsIterator.next();
       if (i >= commentDisplayOffset) {
         Comment comment = Comment.fromEntity(entity);
@@ -66,9 +70,9 @@ public class DataServlet extends HttpServlet {
       }
     }
 
-    GetRequestData data = new GetRequestData(comments, maximumPageNumber);
+    GetRequestedData data = new GetRequestedData(comments, maximumPageNumber);
 
-    //Json conversion
+    // Json conversion
     Gson gson = new Gson();
     String json = gson.toJson(data);
     response.setContentType("application/json;");
@@ -77,7 +81,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    if (request.getParameter("max-comments") != null){
+    if (request.getParameter("max-comments") != null) {
       maximumCommentsPerPage = getMaxComments(request);
     } else {
       pageNumber = getPageParameter(request);
@@ -97,8 +101,8 @@ public class DataServlet extends HttpServlet {
       throw new IllegalArgumentException();
     }
 
-    Preconditions.checkArgument(maximumComments == 5 || maximumComments == 10, 
-      "%s: not a valid value. Value can only be 5 or 10.", maximumComments);
+    Preconditions.checkArgument(maximumComments == 5 || maximumComments == 10,
+        "%s: not a valid value. Value can only be 5 or 10.", maximumComments);
 
     return maximumComments;
   }
@@ -114,8 +118,8 @@ public class DataServlet extends HttpServlet {
       throw new IllegalArgumentException();
     }
 
-    Preconditions.checkArgument(page >=0 || page <= maximumPageNumber, 
-      "%d: not a valid value. Page number cannot be less than zero or more than maximum.", page);
+    Preconditions.checkArgument(page >= 0 || page <= maximumPageNumber,
+        "%d: not a valid value. Page number cannot be less than zero or more than maximum.", page);
 
     return page;
   }
@@ -123,11 +127,11 @@ public class DataServlet extends HttpServlet {
 }
 
 /** Class that stores information requested in get requests */
-class GetRequestData {
+class GetRequestedData {
   List<Comment> comments;
   int maximumPages;
 
-  public GetRequestData(List<Comment> comments, int maximumPages) {
+  public GetRequestedData(List<Comment> comments, int maximumPages) {
     this.comments = comments;
     this.maximumPages = maximumPages;
   }
