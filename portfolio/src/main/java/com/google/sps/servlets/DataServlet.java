@@ -17,19 +17,17 @@ package com.google.sps.servlets;
 import java.io.IOException;
 import com.google.sps.data.Comment;
 import com.google.sps.data.CommentRetriever;
+import com.google.sps.data.GetCommentData;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.common.base.*;
 
 /**
- * Servlet that stores comments so they persist and displays retreives them to
- * be displayed
+ * Servlet for comment retrieval from datastore
  */
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
@@ -42,11 +40,9 @@ public class DataServlet extends HttpServlet {
       commentRetriever = new CommentRetriever(5, 0, 0);
     }
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    List<Comment> comments = commentRetriever.retreiveCurrentPageComments();
 
-    List<Comment> comments = commentRetriever.retreiveCurrentPageComments(datastore);
-
-    GetRequestedData data = new GetRequestedData(comments, commentRetriever.getMaximumPageNumber());
+    GetCommentData data = new GetCommentData(comments, commentRetriever.getMaximumPageNumber());
 
     // Json conversion
     Gson gson = new Gson();
@@ -60,15 +56,15 @@ public class DataServlet extends HttpServlet {
     if (request.getParameter("max-comments") != null) {
       commentRetriever.setMaximumCommentsPerPage(getMaxComments(request));
     } else {
-      System.out.println(commentRetriever);
       commentRetriever.setPageNumber(getPageParameter(request));
-      System.out.println(commentRetriever.getPageNumber());
     }
 
     response.sendRedirect("/index.html");
   }
 
-  /** Retreives the max comments parameter and converts it to int */
+  /**
+   * Retreives the max comments parameter and converts it to int
+   */
   public int getMaxComments(HttpServletRequest request) {
     String maxCommentsString = request.getParameter("max-comments");
 
@@ -85,7 +81,9 @@ public class DataServlet extends HttpServlet {
     return maximumComments;
   }
 
-  /** Retreives the Page parameter and converts it to int */
+  /**
+   * Retreives the Page parameter and converts it to int
+   */
   public int getPageParameter(HttpServletRequest request) {
     String pageString = request.getParameter("page");
 
@@ -102,15 +100,4 @@ public class DataServlet extends HttpServlet {
     return page;
   }
 
-}
-
-/** Class that stores information requested in get requests */
-class GetRequestedData {
-  List<Comment> comments;
-  int maximumPages;
-
-  public GetRequestedData(List<Comment> comments, int maximumPages) {
-    this.comments = comments;
-    this.maximumPages = maximumPages;
-  }
 }

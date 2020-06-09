@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -25,14 +26,16 @@ public class CommentRetriever {
 
   /**
    * Retrieves the comments stored in the database that are on the specified page
-   * @param pageNumber The current page of comments to be retrieved
+   * 
+   * @param pageNumber             The current page of comments to be retrieved
    * @param maximumCommentsPerPage The maximum number of comments on a page
    * @return a List of comments that are on the current page
    */
-  public List<Comment> retreiveCurrentPageComments(DatastoreService datastore) {
+  public List<Comment> retreiveCurrentPageComments() {
     // Retreive comments stored by the database
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     int numberComments = results.countEntities(FetchOptions.Builder.withDefaults());
@@ -58,6 +61,7 @@ public class CommentRetriever {
 
   /**
    * Gets the maximum page Number for the comments
+   * 
    * @return maximum page number
    */
   public int getMaximumPageNumber() {
@@ -66,6 +70,7 @@ public class CommentRetriever {
 
   /**
    * Set the page number field to the given page number
+   * 
    * @param pageNumber The page Number to change to the class field to
    */
   public void setPageNumber(int pageNumber) {
@@ -74,6 +79,7 @@ public class CommentRetriever {
 
   /**
    * Set the maximum comments per page to the given maximumComments per page
+   * 
    * @param maximumCommentsPerPage The value to change the class field to
    */
   public void setMaximumCommentsPerPage(int maximumCommentsPerPage) {

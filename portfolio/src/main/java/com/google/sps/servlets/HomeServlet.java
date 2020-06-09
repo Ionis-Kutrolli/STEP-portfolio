@@ -1,7 +1,7 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
-
+import com.google.sps.data.GetAuthenticationData;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,20 +34,5 @@ public class HomeServlet extends HttpServlet {
     String json = gson.toJson(data);
     response.setContentType("application/json");
     response.getWriter().println(json);
-  }
-}
-
-class GetAuthenticationData {
-  /** Boolean whether anyone is logged in */
-  boolean loggedIn;
-  /** The email of the user logged in null if not logged in */
-  String userEmail;
-  /** Either the login url or the logout url */
-  String url;
-
-  public GetAuthenticationData(boolean loggedIn, String userEmail, String url) {
-    this.loggedIn = loggedIn;
-    this.userEmail = userEmail;
-    this.url = url;
   }
 }
