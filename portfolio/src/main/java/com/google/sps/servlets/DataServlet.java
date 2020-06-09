@@ -16,9 +16,8 @@ package com.google.sps.servlets;
 
 import java.io.IOException;
 import com.google.sps.data.Comment;
+import com.google.sps.data.CommentRetriever;
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,13 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.datastore.FetchOptions;
 import com.google.common.base.*;
-import java.lang.Math;
 
 /**
  * Servlet that stores comments so they persist and displays retreives them to
@@ -41,36 +34,19 @@ import java.lang.Math;
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
-  private int maximumCommentsPerPage = 5;
-  private int maximumPageNumber;
-  private int pageNumber = 0;
+  private CommentRetriever commentRetriever;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Retreive comments stored by the database
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-
-    int numberComments = results.countEntities(FetchOptions.Builder.withDefaults());
-    int maximumPageNumber = (int) Math.ceil((double) numberComments / maximumCommentsPerPage) - 1;
-    int commentDisplayOffset = pageNumber * maximumCommentsPerPage;
-    int lastCommentDisplayableIndex = maximumCommentsPerPage * (pageNumber + 1);
-
-    // Goes through the comments and adds the ones that should be displayed to
-    // comments list
-    List<Comment> comments = new ArrayList<>();
-    Iterator<Entity> resultsIterator = results.asIterator();
-    for (int i = 0; (i < lastCommentDisplayableIndex && resultsIterator.hasNext()); i++) {
-      Entity entity = resultsIterator.next();
-      if (i >= commentDisplayOffset) {
-        Comment comment = Comment.fromEntity(entity);
-        comments.add(comment);
-      }
+    if (commentRetriever == null) {
+      commentRetriever = new CommentRetriever(5, 0, 0);
     }
 
-    GetRequestedData data = new GetRequestedData(comments, maximumPageNumber);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    List<Comment> comments = commentRetriever.retreiveCurrentPageComments(datastore);
+
+    GetRequestedData data = new GetRequestedData(comments, commentRetriever.getMaximumPageNumber());
 
     // Json conversion
     Gson gson = new Gson();
@@ -82,9 +58,11 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if (request.getParameter("max-comments") != null) {
-      maximumCommentsPerPage = getMaxComments(request);
+      commentRetriever.setMaximumCommentsPerPage(getMaxComments(request));
     } else {
-      pageNumber = getPageParameter(request);
+      System.out.println(commentRetriever);
+      commentRetriever.setPageNumber(getPageParameter(request));
+      System.out.println(commentRetriever.getPageNumber());
     }
 
     response.sendRedirect("/index.html");
@@ -118,7 +96,7 @@ public class DataServlet extends HttpServlet {
       throw new IllegalArgumentException();
     }
 
-    Preconditions.checkArgument(page >= 0 || page <= maximumPageNumber,
+    Preconditions.checkArgument(page >= 0 || page <= commentRetriever.getMaximumPageNumber(),
         "%d: not a valid value. Page number cannot be less than zero or more than maximum.", page);
 
     return page;

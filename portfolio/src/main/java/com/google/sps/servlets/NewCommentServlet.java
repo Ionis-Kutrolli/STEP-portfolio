@@ -17,7 +17,7 @@ public class NewCommentServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserLoggedIn()) {
+    // if (userService.isUserLoggedIn()) {
       // Get input from form
       String comment = request.getParameter("comment");
       String user = request.getParameter("user");
@@ -31,7 +31,7 @@ public class NewCommentServlet extends HttpServlet {
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
-    }
+    // }
 
     response.sendRedirect(request.getHeader("referer"));
   }

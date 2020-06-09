@@ -35,4 +35,5 @@ public class Comment {
 
     return new Comment(id, user, userComment, timestamp);
   }
+  
 }
