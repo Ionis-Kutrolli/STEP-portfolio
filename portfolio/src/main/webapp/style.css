@@ -193,6 +193,13 @@ h3, h4, h5, p {
   top: -10px;
 }
 
+#indiv-delete-button {
+  padding: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  top: -15px;
+}
+
 #commenting-section p {
   font-family: 'Roboto Mono', monospace;
 }
@@ -227,4 +234,12 @@ h3, h4, h5, p {
 
 .comment-text {
   margin-top: 5px;
+}
+
+.page-select {
+  background-color: #111;
+  border: none;
+  color: white;
+  font-family: 'Roboto Slab', serif;
+  outline: 1px solid white;
 }
