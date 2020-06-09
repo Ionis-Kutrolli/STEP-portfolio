@@ -70,6 +70,18 @@ const HTML_ELEMENT_BUTTON = 'button';
 let pageNumber = 0;
 let maximumPages;
 
+window.onload = function() {
+  this.loadComments();
+  this.getUserAuthentication();
+}
+
+function getUserAuthentication() {
+  fetch('/auth').then(response => response.text())
+    .then(html => {
+      document.body.insertAdjacentHTML('beforebegin', html);
+    })
+}
+
 /**
  * Changes the image that is displaying corresponds to the id specified.
  * @param {string} id The id of the image to display.
