@@ -25,13 +25,14 @@ public class NewCommentServlet extends HttpServlet {
       // Get input from form
       String comment = request.getParameter("comment");
       String user = request.getParameter("user");
-
+      String userId = userService.getCurrentUser().getUserId();
       long timestamp = System.currentTimeMillis();
 
       Entity commentEntity = new Entity("Comment");
       commentEntity.setProperty("comment", comment);
       commentEntity.setProperty("timestamp", timestamp);
       commentEntity.setProperty("user", user);
+      commentEntity.setProperty("userId", userId);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);

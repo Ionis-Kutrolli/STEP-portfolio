@@ -2,7 +2,7 @@
 function getUserAuthentication() {
   fetch('/auth').then(response => response.json())
     .then(data => {
-      enableCommentSubmition(data.loggedIn, data.userEmail)
+      enableCommentSubmition(data.loggedIn, data.userEmail, data.isAdmin);
       displayAuthenticationBanner(data);
     });
 }
@@ -11,10 +11,11 @@ function getUserAuthentication() {
  *  based on whether the user is logge in or not 
  *  @param {boolean} loggedIn wether the user is logged in or not
  */
-function enableCommentSubmition(loggedIn, userEmail) {
+function enableCommentSubmition(loggedIn, userEmail, isAdmin) {
   var commentButton = document.getElementById("comment-submit");
   var textAreaUser = document.getElementById("textarea-user");
   var textAreaComment = document.getElementById("textarea-comment");
+  var deleteAll = document.getElementById("delete-all");
   if (loggedIn) {
     commentButton.className = "submit-button-enabled";
     commentButton.addEventListener('click', submitComment);
@@ -28,6 +29,11 @@ function enableCommentSubmition(loggedIn, userEmail) {
     textAreaUser.className = "disabled";
     textAreaComment.className = "textarea-disabled";
     textAreaComment.contentEditable = false;
+  }
+  if (isAdmin) {
+    deleteAll.style.display = 'block';
+  } else {
+    deleteAll.style.display = 'none';
   }
 }
 

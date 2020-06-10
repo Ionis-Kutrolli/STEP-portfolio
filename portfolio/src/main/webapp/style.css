@@ -171,7 +171,7 @@ h3, h4, h5, p {
 }
 
 .textarea-disabled::before {
-  content: "Disabled. Please Login to comment.";
+  content: "Disabled. Please login to comment.";
   background-color: gray;
   color: black;
   display: inline-block;

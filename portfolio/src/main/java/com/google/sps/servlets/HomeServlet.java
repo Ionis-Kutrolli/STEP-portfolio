@@ -11,7 +11,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 /**
- * Servlet for handleing the authentication of users
+ * Servlet for handling the authentication of users
  */
 @WebServlet("/auth")
 public class HomeServlet extends HttpServlet {
@@ -22,17 +22,19 @@ public class HomeServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
     boolean loggedIn = false;
+    boolean isAdmin = false;
     String userEmail = null;
     String url;
     if (userService.isUserLoggedIn()) {
       loggedIn = true;
       userEmail = userService.getCurrentUser().getEmail();
       url = userService.createLogoutURL(request.getHeader("referer"));
+      isAdmin = userService.isUserAdmin();
     } else {
       url = userService.createLoginURL(request.getHeader("referer"));
     }
 
-    AuthenticationData data = new AuthenticationData(loggedIn, userEmail, url);
+    AuthenticationData data = new AuthenticationData(loggedIn, userEmail, url, isAdmin);
     Gson gson = new Gson();
     String json = gson.toJson(data);
     response.setContentType("application/json");
