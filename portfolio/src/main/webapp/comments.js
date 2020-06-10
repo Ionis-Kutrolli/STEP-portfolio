@@ -147,30 +147,34 @@ function createCommentElementList(comment) {
   const userElement = document.createElement(HTML_ELEMENT_P);
   const timeElement = document.createElement(HTML_ELEMENT_P);
   const commentTextElement = document.createElement(HTML_ELEMENT_P);
-  const deleteCommentButton = document.createElement(HTML_ELEMENT_BUTTON);
 
   liElement.classList.add(ELEMENT_COMMENTS);
   innerDiv.classList.add(ELEMENT_COMMENT_DIV);
   userElement.classList.add(ELEMENT_USER_TEXT);
   timeElement.classList.add(ELEMENT_TIME_TEXT);
   commentTextElement.classList.add(ELEMENT_COMMENT_TEXT);
-  deleteCommentButton.classList.add(ELEMENT_DELETE_BUTTON);
-  deleteCommentButton.id = ELEMENT_INDIV_DELETE;
+
+  if (comment.userId == this.getUserId() || this.isAdmin()) {
+    console.log(this.userId);
+    const deleteCommentButton = document.createElement(HTML_ELEMENT_BUTTON);
+    deleteCommentButton.classList.add(ELEMENT_DELETE_BUTTON);
+    deleteCommentButton.id = ELEMENT_INDIV_DELETE;
+    deleteCommentButton.innerText = 'x';
+    deleteCommentButton.addEventListener('click', () => {
+      deleteComment(comment);
+
+      //Remove the element holding the comment
+      removeCommentsFromDOM();
+      loadComments();
+    })
+    innerDiv.appendChild(deleteCommentButton);
+  }
 
   userElement.innerText = comment.user + ':';
   var timezone = new Date(comment.timestamp);
   timeElement.innerText = timezone.toLocaleString();
   commentTextElement.innerText = comment.comment;
-  deleteCommentButton.innerText = 'x';
-  deleteCommentButton.addEventListener('click', () => {
-    deleteComment(comment);
-
-    //Remove the element holding the comment
-    removeCommentsFromDOM();
-    loadComments();
-  })
-
-  innerDiv.appendChild(deleteCommentButton);
+  
   innerDiv.appendChild(timeElement);
   innerDiv.appendChild(userElement);
   innerDiv.appendChild(commentTextElement);

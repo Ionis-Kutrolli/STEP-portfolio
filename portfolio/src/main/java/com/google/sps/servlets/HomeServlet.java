@@ -25,16 +25,18 @@ public class HomeServlet extends HttpServlet {
     boolean isAdmin = false;
     String userEmail = null;
     String url;
+    String userId = null;
     if (userService.isUserLoggedIn()) {
       loggedIn = true;
       userEmail = userService.getCurrentUser().getEmail();
       url = userService.createLogoutURL(request.getHeader("referer"));
       isAdmin = userService.isUserAdmin();
+      userId = userService.getCurrentUser().getUserId();
     } else {
       url = userService.createLoginURL(request.getHeader("referer"));
     }
 
-    AuthenticationData data = new AuthenticationData(loggedIn, userEmail, url, isAdmin);
+    AuthenticationData data = new AuthenticationData(loggedIn, userEmail, url, isAdmin, userId);
     Gson gson = new Gson();
     String json = gson.toJson(data);
     response.setContentType("application/json");
