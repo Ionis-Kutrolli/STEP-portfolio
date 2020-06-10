@@ -10,6 +10,9 @@ import com.google.gson.Gson;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+/**
+ * Servlet for handleing the authentication of users
+ */
 @WebServlet("/auth")
 public class HomeServlet extends HttpServlet {
 

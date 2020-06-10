@@ -12,6 +12,10 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 import java.lang.Math;
 
+/**
+ * Class that handles the retrieval of comments from the datastore database
+ * Handles all the logic associated with displaying the comments on the screen
+ */
 public class CommentRetriever {
 
   private int maximumCommentsPerPage;

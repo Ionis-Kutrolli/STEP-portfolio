@@ -11,6 +11,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+/**
+ * Servlet used to handle the submittion of a new comment to the database
+ */
 @WebServlet("/new-comment")
 public class NewCommentServlet extends HttpServlet {
 
@@ -18,6 +21,7 @@ public class NewCommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
+      System.out.println("LoggedIn");
       // Get input from form
       String comment = request.getParameter("comment");
       String user = request.getParameter("user");

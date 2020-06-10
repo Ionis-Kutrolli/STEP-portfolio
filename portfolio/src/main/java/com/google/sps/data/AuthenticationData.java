@@ -1,5 +1,8 @@
 package com.google.sps.data;
 
+/**
+ * Class that stores data for /auth request
+ */
 public class AuthenticationData {
   /** Boolean whether anyone is logged in */
   boolean loggedIn;
