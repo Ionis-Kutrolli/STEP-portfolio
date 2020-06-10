@@ -27,8 +27,6 @@ public class CommentRetriever {
   /**
    * Retrieves the comments stored in the database that are on the specified page
    * 
-   * @param pageNumber             The current page of comments to be retrieved
-   * @param maximumCommentsPerPage The maximum number of comments on a page
    * @return a List of comments that are on the current page
    */
   public List<Comment> retreiveCurrentPageComments() {
