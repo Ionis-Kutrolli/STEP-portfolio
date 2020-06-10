@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Roboto+Slab&display=swap" rel="stylesheet">
     <script src="script.js"></script>
+    <script src="authentication.js"></script>
+    <script src="comments.js"></script>
     <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   </head>
   <body>
@@ -57,6 +59,23 @@
             speak it in comparison to English. 
         </p>
         <h5>Use the Google Translate Dropdown to read the Albanian on the Right.</h5>
+      </div>
+    </div>
+    <div class="comment-section">
+      <div class="white-outline">
+        <div id="commenting-section">
+          <button class="delete-button" onclick="deleteComments()">Delete all comments</button>
+          <p>Leave a comment:</p>
+          <span class="textarea-user" id="textarea-user" contenteditable></span>
+          <span class="textarea-comment" id="textarea-comment" contenteditable></span>
+          <button class="submit-button" id="comment-submit" onclick="submitComment()">Comment</button>
+        </div>
+        </form>
+        <a class="max-comment" onclick="changeMaxComments(5)">5 per page</a>
+        <a class="max-comment" onclick="changeMaxComments(10)">10 per page</a>
+        <div id="comment-container"></div>
+        <button class="page-select" onclick="incrementPage(-1)"><</button>
+        <button class="page-select" onclick="incrementPage(1)">></button>
       </div>
     </div>
   </body>
