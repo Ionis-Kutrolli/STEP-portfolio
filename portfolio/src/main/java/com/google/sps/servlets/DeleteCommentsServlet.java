@@ -10,6 +10,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 
+/**
+ * Servlet for handleing the deletion of all the comments in the datastore database
+ */
 @WebServlet("/delete-comments")
 public class DeleteCommentsServlet extends HttpServlet {
 
@@ -21,7 +24,7 @@ public class DeleteCommentsServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     results.asIterable().forEach(entity -> datastore.delete(entity.getKey()));
-    
+
     response.sendRedirect("/index.html");
   }
 }

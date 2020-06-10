@@ -7,8 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Roboto+Slab&display=swap" rel="stylesheet">
     <script src="script.js"></script>
+    <script src="comments.js"></script>
+    <script src="authentication.js"></script>
   </head>
-  <body onload="loadComments()">
+  <body>
     <div id="nav-bar">
       <h1 id="title">Ionis Kutrolli's Portfolio ｜</h1>
       <a class="nav-button" href="index.html">Home</a>
@@ -82,7 +84,7 @@
           <p>Leave a comment:</p>
           <span class="textarea-user" id="textarea-user" contenteditable></span>
           <span class="textarea-comment" id="textarea-comment" contenteditable></span>
-          <button class="submit-button" onclick="submitComment()">Comment</button>
+          <button class="submit-button" id="comment-submit" onclick="submitComment()">Comment</button>
         </div>
         </form>
         <a class="max-comment" onclick="changeMaxComments(5)">5 per page</a>

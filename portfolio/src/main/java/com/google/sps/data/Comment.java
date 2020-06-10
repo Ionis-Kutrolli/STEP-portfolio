@@ -21,17 +21,19 @@ public class Comment {
     this.timestamp = timestamp;
   }
 
-  /** 
-   * Static factory for converting entity to Comment 
+  /**
+   * Static factory for converting entity to Comment
+   * 
    * @param entity the entity to be converted into comment type
    * @return the converted entity as a Comment
    */
   public static Comment fromEntity(Entity entity) {
     long id = entity.getKey().getId();
-      long timestamp = (long) entity.getProperty("timestamp");
-      String userComment = (String) entity.getProperty("comment");
-      String user = (String) entity.getProperty("user"); // Maybe null if no user
-      
-      return new Comment(id, user, userComment, timestamp);
+    long timestamp = (long) entity.getProperty("timestamp");
+    String userComment = (String) entity.getProperty("comment");
+    String user = (String) entity.getProperty("user"); // Maybe null if no user
+
+    return new Comment(id, user, userComment, timestamp);
   }
+  
 }

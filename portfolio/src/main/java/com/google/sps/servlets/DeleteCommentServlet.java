@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet for handleing the deletion of one selected comment
+ */
 @WebServlet("/delete-comment")
 public class DeleteCommentServlet extends HttpServlet {
 
