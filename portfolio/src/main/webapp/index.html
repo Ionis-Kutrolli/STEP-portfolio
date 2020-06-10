@@ -15,6 +15,8 @@
       <h1 id="title">Ionis Kutrolli's Portfolio ｜</h1>
       <a class="nav-button" href="index.html">Home</a>
       <a class="nav-button" href="about_me.html">About Me</a>
+      <a class="authentication" id="authentication"></a>
+      <a class="authentication-link" id="logging-link"></a>a>
     </div>
     <div id="imgs">
       <img src="/images/racing_drone.jpg" alt="Racing Drone" class="project_imgs" id="racing_drone">
@@ -82,9 +84,9 @@
         <div id="commenting-section">
           <button class="delete-button" onclick="deleteComments()">Delete all comments</button>
           <p>Leave a comment:</p>
-          <span class="textarea-user" id="textarea-user" contenteditable></span>
+          <span class="textarea-user" id="textarea-user"></span>
           <span class="textarea-comment" id="textarea-comment" contenteditable></span>
-          <button class="submit-button" id="comment-submit" onclick="submitComment()">Comment</button>
+          <button class="submit-button" id="comment-submit" >Comment</button>
         </div>
         </form>
         <a class="max-comment" onclick="changeMaxComments(5)">5 per page</a>

@@ -2,8 +2,48 @@
 function getUserAuthentication() {
   fetch('/auth').then(response => response.json())
     .then(data => {
-      if (data.loggedIn) {
-        commentButton = document.getElementById("comment-submit");
-      }
-    })
+      enableCommentSubmition(data.loggedIn, data.userEmail)
+      displayAuthenticationBanner(data);
+    });
+}
+
+/** Enables or disables comment submittion 
+ *  based on whether the user is logge in or not 
+ *  @param {boolean} loggedIn wether the user is logged in or not
+ */
+function enableCommentSubmition(loggedIn, userEmail) {
+  var commentButton = document.getElementById("comment-submit");
+  var textAreaUser = document.getElementById("textarea-user");
+  var textAreaComment = document.getElementById("textarea-comment");
+  if (loggedIn) {
+    commentButton.className = "submit-button-enabled";
+    commentButton.addEventListener('click', submitComment);
+    textAreaUser.className = "textarea-user";
+    textAreaComment.className = "textarea-comment";
+    textAreaUser.innerText = userEmail;
+    textAreaComment.contentEditable = true;
+  } else {
+    commentButton.className = "submit-button-disabled";
+    commentButton.removeEventListener('click', submitComment);
+    textAreaUser.className = "disabled";
+    textAreaComment.className = "textarea-disabled";
+    textAreaComment.contentEditable = false;
+  }
+}
+
+/** Displays the user authentication information for logging in or out
+ * 
+ * @param {object} data the data retrieved from authentication
+ */
+function displayAuthenticationBanner(data) {
+  var authenticationBar = document.getElementById("authentication");
+  var authenticationLink = document.getElementById("logging-link");
+  if (data.loggedIn) {
+    authenticationBar.innerText = "Hello, " + data.userEmail; 
+    authenticationLink.innerText = "Logout"
+  } else {
+    authenticationBar.innerText = "Welcome,";
+    authenticationLink.innerText = "Login"
+  }
+  authenticationLink.href = data.url;
 }
