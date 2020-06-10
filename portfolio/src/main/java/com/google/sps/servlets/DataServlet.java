@@ -17,13 +17,14 @@ package com.google.sps.servlets;
 import java.io.IOException;
 import com.google.sps.data.Comment;
 import com.google.sps.data.CommentRetriever;
-import com.google.sps.data.GetCommentData;
+import com.google.sps.data.CommentData;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import com.google.common.base.*;
 
 /**
@@ -36,13 +37,22 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    if (commentRetriever == null) {
+    HttpSession session = request.getSession(false);
+    if (session == null) {
       commentRetriever = new CommentRetriever(5, 0, 0);
+      session = request.getSession();
+      session.setAttribute("CommentsPerPage", 5);
+      session.setAttribute("MaximumPageNumber", 0);
+      session.setAttribute("PageNumber", 0);
+    } else {
+      commentRetriever = new CommentRetriever((int)session.getAttribute("CommentsPerPage"), 
+        (int)session.getAttribute("MaximumPageNumber"), 
+        (int)session.getAttribute("PageNumber"));
     }
 
     List<Comment> comments = commentRetriever.retreiveCurrentPageComments();
 
-    GetCommentData data = new GetCommentData(comments, commentRetriever.getMaximumPageNumber());
+    CommentData data = new CommentData(comments, commentRetriever.getMaximumPageNumber());
 
     // Json conversion
     Gson gson = new Gson();
@@ -53,10 +63,13 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    HttpSession session = request.getSession();
     if (request.getParameter("max-comments") != null) {
-      commentRetriever.setMaximumCommentsPerPage(getMaxComments(request));
+      session.setAttribute("CommentsPerPage", getMaxComments(request));
+      // commentRetriever.setMaximumCommentsPerPage(getMaxComments(request));
     } else {
-      commentRetriever.setPageNumber(getPageParameter(request));
+      session.setAttribute("PageNumber", getPageParameter(request));
+      // commentRetriever.setPageNumber(getPageParameter(request));
     }
 
     response.sendRedirect("/index.html");

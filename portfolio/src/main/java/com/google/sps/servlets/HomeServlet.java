@@ -1,7 +1,7 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
-import com.google.sps.data.GetAuthenticationData;
+import com.google.sps.data.AuthenticationData;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public class HomeServlet extends HttpServlet {
       url = userService.createLoginURL(request.getHeader("referer"));
     }
 
-    GetAuthenticationData data = new GetAuthenticationData(loggedIn, userEmail, url);
+    AuthenticationData data = new AuthenticationData(loggedIn, userEmail, url);
     Gson gson = new Gson();
     String json = gson.toJson(data);
     response.setContentType("application/json");
