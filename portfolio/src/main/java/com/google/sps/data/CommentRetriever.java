@@ -66,22 +66,4 @@ public class CommentRetriever {
     return maximumPageNumber;
   }
 
-  /**
-   * Set the page number field to the given page number
-   * 
-   * @param pageNumber The page Number to change to the class field to
-   */
-  public void setPageNumber(int pageNumber) {
-    this.pageNumber = pageNumber;
-  }
-
-  /**
-   * Set the maximum comments per page to the given maximumComments per page
-   * 
-   * @param maximumCommentsPerPage The value to change the class field to
-   */
-  public void setMaximumCommentsPerPage(int maximumCommentsPerPage) {
-    this.maximumCommentsPerPage = maximumCommentsPerPage;
-  }
-
 }
