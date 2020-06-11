@@ -127,21 +127,23 @@ function addCommentsToDOM(comments) {
  */
 function translateComment(commentText, languageId) {
   const params = new URLSearchParams();
+  const translatedText;
   params.append('text', commentText);
   params.append('language', languageId);
   fetch('/translate', { method: SERVLET_METHOD_POST, body: params })
-    .then(response => response.text()).then(translatedComment =>{
-      return translatedComment;
+    .then(response => response.text()).then(translation =>{
+      translatedText = translation;
     });
+    return translatedText;
 }
 
-/** Reloads the comments when the languages is changed */
+/** Reloads the comments when the languages is changed. */
 function languageChanged() {
   removeCommentsFromDOM();
   loadComments();
 }
 
-/** Sends request to delete comments from database */
+/** Sends request to delete comments from database. */
 function deleteComments() {
   fetch(FETCH_DELETE_COMMENTS, { method: SERVLET_METHOD_POST })
     .then(removeCommentsFromDOM);
