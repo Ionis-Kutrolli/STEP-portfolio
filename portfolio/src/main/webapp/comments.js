@@ -127,7 +127,7 @@ function addCommentsToDOM(comments) {
  */
 function translateComment(commentText, languageId) {
   const params = new URLSearchParams();
-  const translatedText;
+  const translatedText = null;
   params.append('text', commentText);
   params.append('language', languageId);
   fetch('/translate', { method: SERVLET_METHOD_POST, body: params })
