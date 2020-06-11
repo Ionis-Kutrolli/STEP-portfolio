@@ -56,7 +56,6 @@ function submitComment() {
   params.append(PARAM_USER, username);
   params.append(PARAM_COMMENT, commentElement.innerText);
 
-  usernameElement.innerText = '';
   commentElement.innerText = '';
 
   fetch(FETCH_NEW_COMMENT, { method: SERVLET_METHOD_POST, body: params })
@@ -167,7 +166,8 @@ function createCommentElementList(comment) {
     deleteComment(comment);
 
     //Remove the element holding the comment
-    liElement.remove();
+    removeCommentsFromDOM();
+    loadComments();
   })
 
   innerDiv.appendChild(deleteCommentButton);

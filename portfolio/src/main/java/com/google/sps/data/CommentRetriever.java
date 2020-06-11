@@ -57,7 +57,6 @@ public class CommentRetriever {
         comments.add(comment);
       }
     }
-
     return comments;
   }
 

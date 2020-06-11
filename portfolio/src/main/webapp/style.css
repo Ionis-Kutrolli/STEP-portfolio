@@ -45,6 +45,10 @@
   color: white;
 }
 
+.authentication {
+  color: white;
+}
+
 h3, h4, h5, p {
   font-family: 'Roboto Slab', serif;
 }
@@ -157,7 +161,7 @@ h3, h4, h5, p {
 }
 
 .textarea-user {
-  width: 20%;
+  width: 25%;
   max-height: 20px;
 }
 
@@ -166,7 +170,21 @@ h3, h4, h5, p {
   color: white;
 }
 
-.submit-button {
+.textarea-disabled::before {
+  content: "Disabled. Please login to comment.";
+  background-color: gray;
+  color: black;
+  display: inline-block;
+  width: 50%;
+  overflow: hidden;
+  min-height: 20px;
+  line-height: 20px;
+  font-family: 'Roboto Slab', serif;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.submit-button-enabled, .submit-button-disabled {
   position: relative;
   top: -7px;
   background-color: cadetblue;
@@ -174,6 +192,11 @@ h3, h4, h5, p {
   border-radius: 5px;
   outline: none;
   padding: 5px;
+}
+
+.submit-button-disabled {
+  background-color: grey;
+  border: solid grey;
 }
 
 .comment-section {

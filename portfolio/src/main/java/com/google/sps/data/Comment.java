@@ -1,7 +1,5 @@
 package com.google.sps.data;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.appengine.api.datastore.Entity;
 
 /**
@@ -9,13 +7,15 @@ import com.google.appengine.api.datastore.Entity;
  */
 public class Comment {
   private final String user;
+  private final String userId;
   private final long id;
   private final String comment;
   // Timestamp in millis
   private final long timestamp;
 
-  private Comment(long id, String user, String comment, long timestamp) {
+  private Comment(long id, String userId, String user, String comment, long timestamp) {
     this.id = id;
+    this.userId = userId;
     this.user = user;
     this.comment = comment;
     this.timestamp = timestamp;
@@ -32,8 +32,9 @@ public class Comment {
     long timestamp = (long) entity.getProperty("timestamp");
     String userComment = (String) entity.getProperty("comment");
     String user = (String) entity.getProperty("user"); // Maybe null if no user
+    String userId = (String) entity.getProperty("userId");
 
-    return new Comment(id, user, userComment, timestamp);
+    return new Comment(id, userId, user, userComment, timestamp);
   }
   
 }
