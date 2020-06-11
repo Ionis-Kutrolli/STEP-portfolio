@@ -10,12 +10,15 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.sps.data.SentimentAnalyser;
 
 /**
- * Servlet used to handle the submittion of a new comment to the database
+ * Servlet used to handle the submittion of a new comment to the database.
  */
 @WebServlet("/new-comment")
 public class NewCommentServlet extends HttpServlet {
+
+  SentimentAnalyser sentimentAnalyser = new SentimentAnalyser();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -34,6 +37,7 @@ public class NewCommentServlet extends HttpServlet {
       commentEntity.setProperty("user", user);
       commentEntity.setProperty("userId", userId);
       commentEntity.setProperty("language", languageId);
+      commentEntity.setProperty("sentiment", sentimentAnalyser.analyseSentiment(comment));
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
