@@ -12,13 +12,15 @@ public class Comment {
   private final String comment;
   // Timestamp in millis
   private final long timestamp;
+  private final String languageId;
 
-  private Comment(long id, String userId, String user, String comment, long timestamp) {
+  private Comment(long id, String userId, String user, String comment, long timestamp, String languageId) {
     this.id = id;
     this.userId = userId;
     this.user = user;
     this.comment = comment;
     this.timestamp = timestamp;
+    this.languageId = languageId;
   }
 
   /**
@@ -33,8 +35,9 @@ public class Comment {
     String userComment = (String) entity.getProperty("comment");
     String user = (String) entity.getProperty("user"); // Maybe null if no user
     String userId = (String) entity.getProperty("userId");
+    String languageId = (String) entity.getProperty("language");
 
-    return new Comment(id, userId, user, userComment, timestamp);
+    return new Comment(id, userId, user, userComment, timestamp, languageId);
   }
   
 }

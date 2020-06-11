@@ -47,6 +47,7 @@ let maximumPages;
 function submitComment() {
   const commentElement = document.getElementById(ELEMENT_TEXTAREA_COMMENT);
   const usernameElement = document.getElementById(ELEMENT_TEXTAREA_USER);
+  const languageElement = document.getElementById('language');
   const params = new URLSearchParams();
 
   var username = usernameElement.innerText;
@@ -55,6 +56,7 @@ function submitComment() {
   }
   params.append(PARAM_USER, username);
   params.append(PARAM_COMMENT, commentElement.innerText);
+  params.append('language', languageElement.value);
 
   commentElement.innerText = '';
 
@@ -105,13 +107,27 @@ function incrementPage(increment) {
 
 /** Adds comments with user name to DOM. */
 function addCommentsToDOM(comments) {
+  const languageId = document.getElementById('language').value;
   const commentListElement = document
     .getElementById(ELEMENT_COMMENT_CONTAINER);
 
   comments.forEach((comment) => {
+    if (comment.languageId != languageId) {
+      comment.comment = translateComment(comment.comment, languageId);
+    }
     var time = new Date(comment.timestamp);
     commentListElement.appendChild(createCommentElementList(comment));
   });
+}
+
+function translateComment(commentText, languageId) {
+  const params = new URLSearchParams();
+  params.append('text', commentText);
+  params.append('language', languageId);
+  fetch('/translate', { method: SERVLET_METHOD_POST, body: params })
+    .then(response => response.text()).then(translatedComment =>{
+      return translatedComment;
+    });
 }
 
 /** Sends request to delete comments from database */
