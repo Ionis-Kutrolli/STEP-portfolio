@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
 import com.google.common.base.*;
 
 /**
- * Servlet for comment retrieval from datastore
+ * Servlet for comment retrieval from datastore.
  */
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
@@ -66,10 +66,8 @@ public class DataServlet extends HttpServlet {
     HttpSession session = request.getSession();
     if (request.getParameter("max-comments") != null) {
       session.setAttribute("CommentsPerPage", getMaxComments(request));
-      // commentRetriever.setMaximumCommentsPerPage(getMaxComments(request));
     } else {
       session.setAttribute("PageNumber", getPageParameter(request));
-      // commentRetriever.setPageNumber(getPageParameter(request));
     }
 
     response.sendRedirect("/index.html");

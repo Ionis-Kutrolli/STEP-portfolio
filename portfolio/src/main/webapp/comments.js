@@ -120,6 +120,11 @@ function addCommentsToDOM(comments) {
   });
 }
 
+/**
+ * Takes the text of a comments and translates it to the langauge selected
+ * @param {String} commentText Text to be translated
+ * @param {String} languageId Language to translate to
+ */
 function translateComment(commentText, languageId) {
   const params = new URLSearchParams();
   params.append('text', commentText);
@@ -128,6 +133,12 @@ function translateComment(commentText, languageId) {
     .then(response => response.text()).then(translatedComment =>{
       return translatedComment;
     });
+}
+
+/** Reloads the comments when the languages is changed */
+function languageChanged() {
+  removeCommentsFromDOM();
+  loadComments();
 }
 
 /** Sends request to delete comments from database */

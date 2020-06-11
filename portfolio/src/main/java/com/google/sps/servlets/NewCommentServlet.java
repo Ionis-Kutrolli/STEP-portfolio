@@ -21,7 +21,6 @@ public class NewCommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
-      System.out.println("LoggedIn");
       // Get input from form
       String comment = request.getParameter("comment");
       String user = request.getParameter("user");
