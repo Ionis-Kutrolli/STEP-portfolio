@@ -52,11 +52,9 @@ function displayAuthenticationBanner(data) {
   var authenticationBar = document.getElementById("authentication");
   var authenticationLink = document.getElementById("logging-link");
   if (data.loggedIn) {
-    authenticationBar.innerText = "Hello, " + data.userEmail; 
-    authenticationLink.innerText = "Logout"
+    authenticationLink.innerText = "Sign out"
   } else {
-    authenticationBar.innerText = "Welcome,";
-    authenticationLink.innerText = "Login"
+    authenticationLink.innerText = "Sign in"
   }
   authenticationLink.href = data.url;
 }
