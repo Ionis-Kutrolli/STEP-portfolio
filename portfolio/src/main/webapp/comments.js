@@ -113,7 +113,7 @@ function addCommentsToDOM(comments) {
 
   comments.forEach((comment) => {
     if (comment.languageId != languageId) {
-      comment.comment = translateComment(comment.comment, languageId);
+      translateComment(comment.comment, languageId, comment.id);
     }
     var time = new Date(comment.timestamp);
     commentListElement.appendChild(createCommentElementList(comment));
@@ -125,16 +125,14 @@ function addCommentsToDOM(comments) {
  * @param {String} commentText Text to be translated
  * @param {String} languageId Language to translate to
  */
-function translateComment(commentText, languageId) {
+function translateComment(commentText, languageId, commentId) {
   const params = new URLSearchParams();
-  var translatedText = null;
   params.append('text', commentText);
   params.append('language', languageId);
   fetch('/translate', { method: SERVLET_METHOD_POST, body: params })
-    .then(response => response.text()).then(translation =>{
-      translatedText = translation;
+    .then(response => response.text()).then(translatedText => {
+      document.getElementById(commentId).innerText = translatedText;
     });
-    return translatedText;
 }
 
 /** Reloads the comments when the languages is changed. */
@@ -182,9 +180,9 @@ function createCommentElementList(comment) {
   userElement.classList.add(ELEMENT_USER_TEXT);
   timeElement.classList.add(ELEMENT_TIME_TEXT);
   commentTextElement.classList.add(ELEMENT_COMMENT_TEXT);
+  commentTextElement.id = comment.id;
 
   if (comment.userId == this.getUserId() || this.isAdmin()) {
-    console.log(this.userId);
     const deleteCommentButton = document.createElement(HTML_ELEMENT_BUTTON);
     deleteCommentButton.classList.add(ELEMENT_DELETE_BUTTON);
     deleteCommentButton.id = ELEMENT_INDIV_DELETE;
