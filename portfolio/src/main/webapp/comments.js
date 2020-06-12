@@ -144,20 +144,24 @@ function languageChanged() {
 
 /**
  * Displays the sentiment of a comment in the color of the users name
- * red negative sentiment green positive sentiment
- * @param {object} comment the comment to dispaly the sentiment of
+ * red negative sentiment green positive sentiment.
+ * @param {object} comment the comment to dispaly the sentiment of.
  */
 function displaySentiment(comment) {
-  var red = 255 - (255*comment.sentiment)
-  var green = 255*comment.sentiment;
+  var red = Math.floor(255 - (127.5*(comment.sentiment+1)));
+  var green = Math.floor((127.5*(comment.sentiment+1)));
   var color = '#' + convertToHex(red) + convertToHex(green) + '00';
-  if (comment.sentiment == -1) {
+  if (comment.sentiment < .05 && comment.sentiment > -.05) {
     color = 'white';
   }
-  console.log(comment.id);
+  console.log(color);
   document.getElementById(comment.id + ":user").style.color = color;
 }
 
+/**
+ * Converts the number value to hexadecimal.
+ * @param {number} value the number to be converted.
+ */
 function convertToHex(value) {
   var hex = value.toString(16);
   return hex.length == 1 ? "0" + hex : hex;

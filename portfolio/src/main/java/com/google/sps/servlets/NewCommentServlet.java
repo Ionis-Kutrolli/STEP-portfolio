@@ -35,7 +35,7 @@ public class NewCommentServlet extends HttpServlet {
       try {
         sentiment = sentimentAnalyser.analyseSentiment(comment); 
       } catch (IOException e) {
-        sentiment = -1.0f;
+        sentiment = 0.0f;
       }
 
       Entity commentEntity = new Entity("Comment");
