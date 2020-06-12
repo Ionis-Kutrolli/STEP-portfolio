@@ -30,6 +30,7 @@ const LANGUAGE_ALBANIAN = 'sq';
 window.onload = function () {
   this.loadComments();
   this.getUserAuthentication();
+  this.loadTranslateOptions();
 }
 
 /**

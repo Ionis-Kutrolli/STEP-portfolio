@@ -31,7 +31,7 @@ public class NewCommentServlet extends HttpServlet {
       String userId = userService.getCurrentUser().getUserId();
       long timestamp = System.currentTimeMillis();
       float sentiment;
-      // Try statement when sentiment is not enabled
+      // Try statement when sentiment is not enabled. 0 is neutral sentiment.
       try {
         sentiment = sentimentAnalyser.analyseSentiment(comment); 
       } catch (IOException e) {
