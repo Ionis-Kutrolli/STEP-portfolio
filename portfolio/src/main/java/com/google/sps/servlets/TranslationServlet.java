@@ -11,6 +11,9 @@ import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 
+/**
+ * Servlet for handling the translation of comments.
+ */
 @WebServlet("/translate")
 public class TranslationServlet extends HttpServlet {
 

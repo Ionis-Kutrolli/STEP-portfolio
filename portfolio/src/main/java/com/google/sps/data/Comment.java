@@ -39,7 +39,7 @@ public class Comment {
     String user = (String) entity.getProperty("user"); // Maybe null if no user
     String userId = (String) entity.getProperty("userId");
     String languageId = (String) entity.getProperty("language");
-    float sentiment = (float) entity.getProperty("sentiment");
+    float sentiment =  ((Double) entity.getProperty("sentiment")).floatValue();
 
     return new Comment(id, userId, user, userComment, timestamp, languageId, sentiment);
   }

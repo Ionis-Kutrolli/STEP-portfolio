@@ -1,18 +1,18 @@
 package com.google.sps.data;
 
 /**
- * Class that stores data for /auth request
+ * Class that stores data for /auth request.
  */
 public class AuthenticationData {
-  /** Boolean whether anyone is logged in */
+  /** Boolean whether anyone is logged in. */
   boolean loggedIn;
-  /** The email of the user logged in null if not logged in */
+  /** The email of the user logged in null if not logged in. */
   String userEmail;
-  /** Either the login url or the logout url */
+  /** Either the login url or the logout url. */
   String url;
-  /** Boolean whether the user is admin */
+  /** Boolean whether the user is admin. */
   boolean isAdmin;
-  /** The id for the authenticated user */
+  /** The id for the authenticated user. */
   String userId;
 
   public AuthenticationData(boolean loggedIn, String userEmail, String url, boolean isAdmin, String userId) {

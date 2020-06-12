@@ -30,6 +30,13 @@ public class NewCommentServlet extends HttpServlet {
       String languageId = request.getParameter("language");
       String userId = userService.getCurrentUser().getUserId();
       long timestamp = System.currentTimeMillis();
+      float sentiment;
+      // Try statement when sentiment is not enabled
+      try {
+        sentiment = sentimentAnalyser.analyseSentiment(comment); 
+      } catch (IOException e) {
+        sentiment = -1.0f;
+      }
 
       Entity commentEntity = new Entity("Comment");
       commentEntity.setProperty("comment", comment);
@@ -37,7 +44,7 @@ public class NewCommentServlet extends HttpServlet {
       commentEntity.setProperty("user", user);
       commentEntity.setProperty("userId", userId);
       commentEntity.setProperty("language", languageId);
-      commentEntity.setProperty("sentiment", sentimentAnalyser.analyseSentiment(comment));
+      commentEntity.setProperty("sentiment", sentiment);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);

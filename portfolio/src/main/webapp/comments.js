@@ -117,6 +117,7 @@ function addCommentsToDOM(comments) {
     }
     var time = new Date(comment.timestamp);
     commentListElement.appendChild(createCommentElementList(comment));
+    displaySentiment(comment);
   });
 }
 
@@ -139,6 +140,27 @@ function translateComment(commentText, languageId, commentId) {
 function languageChanged() {
   removeCommentsFromDOM();
   loadComments();
+}
+
+/**
+ * Displays the sentiment of a comment in the color of the users name
+ * red negative sentiment green positive sentiment
+ * @param {object} comment the comment to dispaly the sentiment of
+ */
+function displaySentiment(comment) {
+  var red = 255 - (255*comment.sentiment)
+  var green = 255*comment.sentiment;
+  var color = '#' + convertToHex(red) + convertToHex(green) + '00';
+  if (comment.sentiment == -1) {
+    color = 'white';
+  }
+  console.log(comment.id);
+  document.getElementById(comment.id + ":user").style.color = color;
+}
+
+function convertToHex(value) {
+  var hex = value.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
 }
 
 /** Sends request to delete comments from database. */
@@ -181,6 +203,7 @@ function createCommentElementList(comment) {
   timeElement.classList.add(ELEMENT_TIME_TEXT);
   commentTextElement.classList.add(ELEMENT_COMMENT_TEXT);
   commentTextElement.id = comment.id;
+  userElement.id = comment.id + ':user';
 
   if (comment.userId == this.getUserId() || this.isAdmin()) {
     const deleteCommentButton = document.createElement(HTML_ELEMENT_BUTTON);
