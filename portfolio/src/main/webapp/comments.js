@@ -47,6 +47,7 @@ let maximumPages;
 function submitComment() {
   const commentElement = document.getElementById(ELEMENT_TEXTAREA_COMMENT);
   const usernameElement = document.getElementById(ELEMENT_TEXTAREA_USER);
+  const languageElement = document.getElementById('language');
   const params = new URLSearchParams();
 
   var username = usernameElement.innerText;
@@ -55,6 +56,7 @@ function submitComment() {
   }
   params.append(PARAM_USER, username);
   params.append(PARAM_COMMENT, commentElement.innerText);
+  params.append('language', languageElement.value);
 
   commentElement.innerText = '';
 
@@ -105,16 +107,41 @@ function incrementPage(increment) {
 
 /** Adds comments with user name to DOM. */
 function addCommentsToDOM(comments) {
+  const languageId = document.getElementById('language').value;
   const commentListElement = document
     .getElementById(ELEMENT_COMMENT_CONTAINER);
 
   comments.forEach((comment) => {
+    if (comment.languageId != languageId) {
+      translateComment(comment.comment, languageId, comment.id);
+    }
     var time = new Date(comment.timestamp);
     commentListElement.appendChild(createCommentElementList(comment));
   });
 }
 
-/** Sends request to delete comments from database */
+/**
+ * Takes the text of a comments and translates it to the langauge selected
+ * @param {String} commentText Text to be translated
+ * @param {String} languageId Language to translate to
+ */
+function translateComment(commentText, languageId, commentId) {
+  const params = new URLSearchParams();
+  params.append('text', commentText);
+  params.append('language', languageId);
+  fetch('/translate', { method: SERVLET_METHOD_POST, body: params })
+    .then(response => response.text()).then(translatedText => {
+      document.getElementById(commentId).innerText = translatedText;
+    });
+}
+
+/** Reloads the comments when the languages is changed. */
+function languageChanged() {
+  removeCommentsFromDOM();
+  loadComments();
+}
+
+/** Sends request to delete comments from database. */
 function deleteComments() {
   fetch(FETCH_DELETE_COMMENTS, { method: SERVLET_METHOD_POST })
     .then(removeCommentsFromDOM);
@@ -147,30 +174,34 @@ function createCommentElementList(comment) {
   const userElement = document.createElement(HTML_ELEMENT_P);
   const timeElement = document.createElement(HTML_ELEMENT_P);
   const commentTextElement = document.createElement(HTML_ELEMENT_P);
-  const deleteCommentButton = document.createElement(HTML_ELEMENT_BUTTON);
 
   liElement.classList.add(ELEMENT_COMMENTS);
   innerDiv.classList.add(ELEMENT_COMMENT_DIV);
   userElement.classList.add(ELEMENT_USER_TEXT);
   timeElement.classList.add(ELEMENT_TIME_TEXT);
   commentTextElement.classList.add(ELEMENT_COMMENT_TEXT);
-  deleteCommentButton.classList.add(ELEMENT_DELETE_BUTTON);
-  deleteCommentButton.id = ELEMENT_INDIV_DELETE;
+  commentTextElement.id = comment.id;
+
+  if (comment.userId == this.getUserId() || this.isAdmin()) {
+    const deleteCommentButton = document.createElement(HTML_ELEMENT_BUTTON);
+    deleteCommentButton.classList.add(ELEMENT_DELETE_BUTTON);
+    deleteCommentButton.id = ELEMENT_INDIV_DELETE;
+    deleteCommentButton.innerText = 'x';
+    deleteCommentButton.addEventListener('click', () => {
+      deleteComment(comment);
+
+      //Remove the element holding the comment
+      removeCommentsFromDOM();
+      loadComments();
+    })
+    innerDiv.appendChild(deleteCommentButton);
+  }
 
   userElement.innerText = comment.user + ':';
   var timezone = new Date(comment.timestamp);
   timeElement.innerText = timezone.toLocaleString();
   commentTextElement.innerText = comment.comment;
-  deleteCommentButton.innerText = 'x';
-  deleteCommentButton.addEventListener('click', () => {
-    deleteComment(comment);
-
-    //Remove the element holding the comment
-    removeCommentsFromDOM();
-    loadComments();
-  })
-
-  innerDiv.appendChild(deleteCommentButton);
+  
   innerDiv.appendChild(timeElement);
   innerDiv.appendChild(userElement);
   innerDiv.appendChild(commentTextElement);

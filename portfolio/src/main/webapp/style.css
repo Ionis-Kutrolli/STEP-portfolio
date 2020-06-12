@@ -29,6 +29,25 @@
   border-radius: 10px;
 }
 
+.authentication-link {
+  position: absolute;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 15px;
+  background-color: #1a73e8;
+  border-radius: 5px;
+  text-decoration: none;
+  padding: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: white;
+  top: 2.5%;
+  right: 1%;
+}
+
+.authentication-link:hover {
+  background-color: #4f93ff;
+}
+
 .footer_link {
   margin-right: 30px;
   text-decoration: underline;
@@ -153,7 +172,7 @@ h3, h4, h5, p {
   color:white;
 }
 
-.textarea-comment:focus, .textarea-user:focus{
+.textarea-comment:focus, .textarea-user:focus, #language:focus{
   outline: none;
   border: 2px solid #555;
   background-color: white;
@@ -179,6 +198,16 @@ h3, h4, h5, p {
   overflow: hidden;
   min-height: 20px;
   line-height: 20px;
+  font-family: 'Roboto Slab', serif;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+#language {
+  color: white;
+  background-color: #222;
+  border: 2px solid white;
+  overflow: hidden;
   font-family: 'Roboto Slab', serif;
   -webkit-transition: 0.5s;
   transition: 0.5s;

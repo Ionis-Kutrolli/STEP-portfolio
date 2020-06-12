@@ -10,14 +10,17 @@ public class AuthenticationData {
   String userEmail;
   /** Either the login url or the logout url */
   String url;
-  /** Booelean whether the user is admin */
+  /** Boolean whether the user is admin */
   boolean isAdmin;
+  /** The id for the authenticated user */
+  String userId;
 
-  public AuthenticationData(boolean loggedIn, String userEmail, String url, boolean isAdmin) {
+  public AuthenticationData(boolean loggedIn, String userEmail, String url, boolean isAdmin, String userId) {
     this.loggedIn = loggedIn;
     this.userEmail = userEmail;
     this.url = url;
     this.isAdmin = isAdmin;
+    this.userId = userId;
   }
 
 }

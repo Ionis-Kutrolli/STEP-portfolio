@@ -21,10 +21,10 @@ public class NewCommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
-      System.out.println("LoggedIn");
       // Get input from form
       String comment = request.getParameter("comment");
       String user = request.getParameter("user");
+      String languageId = request.getParameter("language");
       String userId = userService.getCurrentUser().getUserId();
       long timestamp = System.currentTimeMillis();
 
@@ -33,6 +33,7 @@ public class NewCommentServlet extends HttpServlet {
       commentEntity.setProperty("timestamp", timestamp);
       commentEntity.setProperty("user", user);
       commentEntity.setProperty("userId", userId);
+      commentEntity.setProperty("language", languageId);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);

@@ -1,9 +1,16 @@
+/** The id of the user if they are logged in */
+var userId;
+/** If the user is and Admin */
+var admin = false;
+
 /** Fetches the link to allow users to login */
 function getUserAuthentication() {
   fetch('/auth').then(response => response.json())
     .then(data => {
       enableCommentSubmition(data.loggedIn, data.userEmail, data.isAdmin);
       displayAuthenticationBanner(data);
+      userId = data.userId;
+      admin = data.isAdmin;
     });
 }
 
@@ -45,11 +52,21 @@ function displayAuthenticationBanner(data) {
   var authenticationBar = document.getElementById("authentication");
   var authenticationLink = document.getElementById("logging-link");
   if (data.loggedIn) {
-    authenticationBar.innerText = "Hello, " + data.userEmail; 
-    authenticationLink.innerText = "Logout"
+    authenticationLink.innerText = "Sign out"
   } else {
-    authenticationBar.innerText = "Welcome,";
-    authenticationLink.innerText = "Login"
+    authenticationLink.innerText = "Sign in"
   }
   authenticationLink.href = data.url;
+}
+
+/**
+ * Return the id of the user if logged in if not logged in null
+ */
+function getUserId() {
+  return userId;
+}
+
+/** Returns whether the user is admin or not */
+function isAdmin() {
+  return admin;
 }

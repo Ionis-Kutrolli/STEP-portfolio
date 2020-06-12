@@ -25,7 +25,6 @@ public class DeleteCommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
-    
       long id = Long.parseLong(request.getParameter("id"));
 
       Key commentEntityKey = KeyFactory.createKey("Comment", id);
@@ -37,7 +36,8 @@ public class DeleteCommentServlet extends HttpServlet {
         System.out.println("Cannot find comment to delete.");
         return;
       }
-      if (userService.getCurrentUser().getUserId().equals(commentEntity.getProperty("userId"))) {
+      if (userService.getCurrentUser().getUserId().equals(commentEntity.getProperty("userId")) 
+          || userService.isUserAdmin()) {
         datastore.delete(commentEntityKey);
       }
     }

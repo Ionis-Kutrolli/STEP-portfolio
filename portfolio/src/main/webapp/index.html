@@ -16,7 +16,7 @@
       <a class="nav-button" href="index.html">Home</a>
       <a class="nav-button" href="about_me.html">About Me</a>
       <a class="authentication" id="authentication"></a>
-      <a class="authentication-link" id="logging-link"></a>a>
+      <a class="authentication-link" id="logging-link"></a>
     </div>
     <div id="imgs">
       <img src="/images/racing_drone.jpg" alt="Racing Drone" class="project_imgs" id="racing_drone">
@@ -91,6 +91,18 @@
         </form>
         <a class="max-comment" onclick="changeMaxComments(5)">5 per page</a>
         <a class="max-comment" onclick="changeMaxComments(10)">10 per page</a>
+        <select id="language" onchange="languageChanged()">
+          <option value="es" selected>English</option>
+          <option value="zh">Chinese</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="ar">Arabic</option>
+          <option value="it">Italian</option>
+          <option value="pt">Portuguese</option>
+          <option value="de">German</option>
+          <option value="ko">Korean</option>>
+          <option value="ja">Japanese</option>
+        </select>
         <div id="comment-container"></div>
         <button class="page-select" onclick="incrementPage(-1)"><</button>
         <button class="page-select" onclick="incrementPage(1)">></button>
