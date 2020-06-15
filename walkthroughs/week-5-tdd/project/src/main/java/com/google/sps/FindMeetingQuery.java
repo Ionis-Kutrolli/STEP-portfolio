@@ -96,8 +96,7 @@ public final class FindMeetingQuery {
 
   /**
    * Checks to see if all optional attendees can attend by going through events that
-   * optional attendees are attending. If optional attendees cannot all attend return false, 
-   * otherwise true.
+   * optional attendees are attending.
    * @param currentOptions The current Time Range options for meeting.
    * @param events The events that optional attendees are attending.
    */
