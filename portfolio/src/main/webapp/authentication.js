@@ -1,7 +1,7 @@
 /** The id of the user if they are logged in */
 var userId;
 /** If the user is and Admin */
-var admin = false;
+var isAdmin = false;
 
 /** Fetches the link to allow users to login */
 function getUserAuthentication() {
@@ -10,7 +10,7 @@ function getUserAuthentication() {
       enableCommentSubmition(data.loggedIn, data.userEmail, data.isAdmin);
       displayAuthenticationBanner(data);
       userId = data.userId;
-      admin = data.isAdmin;
+      isAdmin = data.isAdmin;
     });
 }
 
@@ -68,5 +68,5 @@ function getUserId() {
 
 /** Returns whether the user is admin or not */
 function isAdmin() {
-  return admin;
+  return isAdmin;
 }

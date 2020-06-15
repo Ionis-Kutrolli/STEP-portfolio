@@ -46,7 +46,7 @@ public class CommentRetriever {
     int commentDisplayOffset = pageNumber * maximumCommentsPerPage;
     int lastCommentDisplayableIndex = maximumCommentsPerPage * (pageNumber + 1);
 
-    // Goes through the comments and adds the ones that should be displayed to
+    // Goes through the comments and adds the ones that should be displayed to.
     // comments list
     List<Comment> comments = new ArrayList<>();
     Iterator<Entity> resultsIterator = results.asIterator();

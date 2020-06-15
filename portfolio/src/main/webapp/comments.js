@@ -1,4 +1,9 @@
 //              Constants              //
+const languageIds = ["en", "zh", "es", "fr", "ar",
+                     "it", "pt", "de", "ko", "ja"]
+const languages = ["English", "Chinese", "Spanish", 
+                  "French", "Arabic", "Italian", 
+                  "Portuguese", "German", "Korean", "Japanese"]
 /** HTML element ID for comment text area */
 const ELEMENT_TEXTAREA_COMMENT = 'textarea-comment';
 /** HTML element ID for user text area */
@@ -12,6 +17,7 @@ const ELEMENT_TIME_TEXT = 'time-text';
 const ELEMENT_COMMENT_TEXT = 'comment-text';
 const ELEMENT_DELETE_BUTTON = 'delete-button';
 const ELEMENT_INDIV_DELETE = 'indiv-delete-button';
+const ELEMENT_LANG = 'language';
 /** Parameter id for user */
 const PARAM_USER = 'user';
 /** Parameter id for comment */
@@ -22,6 +28,10 @@ const PARAM_ID = 'id';
 const PARAM_MAX_COMMENT = 'max-comments';
 /** Parameter id for page number */
 const PARAM_PAGE = 'page';
+/** Parameter id for language */
+const PARAM_LANG = 'language';
+/** Parameter id for comment text */
+const PARAM_TEXT = 'text';
 /** Fetch new comment servlet */
 const FETCH_NEW_COMMENT = '/new-comment';
 /** Fetch comment servlet */
@@ -30,6 +40,8 @@ const FETCH_COMMENT = '/comment';
 const FETCH_DELETE_COMMENTS = '/delete-comments';
 /** Fetch delete comment servlet */
 const FETCH_DELETE_COMMENT = '/delete-comment';
+/** Fetch translate comment servlet */
+const FETCH_TRANSLATE = '/translate';
 /** Servlet method type */
 const SERVLET_METHOD_POST = 'POST';
 
@@ -47,16 +59,14 @@ let maximumPages;
 function submitComment() {
   const commentElement = document.getElementById(ELEMENT_TEXTAREA_COMMENT);
   const usernameElement = document.getElementById(ELEMENT_TEXTAREA_USER);
-  const languageElement = document.getElementById('language');
+  const languageElement = document.getElementById(ELEMENT_LANG);
   const params = new URLSearchParams();
 
   var username = usernameElement.innerText;
-  if (username === '') {
-    username = 'Anonymous';
-  }
+
   params.append(PARAM_USER, username);
   params.append(PARAM_COMMENT, commentElement.innerText);
-  params.append('language', languageElement.value);
+  params.append(PARAM_LANG, languageElement.value);
 
   commentElement.innerText = '';
 
@@ -107,7 +117,7 @@ function incrementPage(increment) {
 
 /** Adds comments with user name to DOM. */
 function addCommentsToDOM(comments) {
-  const languageId = document.getElementById('language').value;
+  const languageId = document.getElementById(ELEMENT_LANG).value;
   const commentListElement = document
     .getElementById(ELEMENT_COMMENT_CONTAINER);
 
@@ -117,6 +127,7 @@ function addCommentsToDOM(comments) {
     }
     var time = new Date(comment.timestamp);
     commentListElement.appendChild(createCommentElementList(comment));
+    displaySentiment(comment);
   });
 }
 
@@ -127,9 +138,9 @@ function addCommentsToDOM(comments) {
  */
 function translateComment(commentText, languageId, commentId) {
   const params = new URLSearchParams();
-  params.append('text', commentText);
-  params.append('language', languageId);
-  fetch('/translate', { method: SERVLET_METHOD_POST, body: params })
+  params.append(PARAM_TEXT, commentText);
+  params.append(PARAM_LANG, languageId);
+  fetch(FETCH_TRANSLATE, { method: SERVLET_METHOD_POST, body: params })
     .then(response => response.text()).then(translatedText => {
       document.getElementById(commentId).innerText = translatedText;
     });
@@ -139,6 +150,30 @@ function translateComment(commentText, languageId, commentId) {
 function languageChanged() {
   removeCommentsFromDOM();
   loadComments();
+}
+
+/**
+ * Displays the sentiment of a comment in the color of the users name
+ * red negative sentiment green positive sentiment.
+ * @param {object} comment the comment to dispaly the sentiment of.
+ */
+function displaySentiment(comment) {
+  var red = Math.floor(255 - (127.5*(comment.sentiment+1)));
+  var green = Math.floor((127.5*(comment.sentiment+1)));
+  var color = '#' + convertToHex(red) + convertToHex(green) + '00';
+  if (comment.sentiment < .05 && comment.sentiment > -.05) {
+    color = 'white';
+  }
+  document.getElementById(comment.id + ":user").style.color = color;
+}
+
+/**
+ * Converts the number value to hexadecimal.
+ * @param {number} value the number to be converted.
+ */
+function convertToHex(value) {
+  var hex = value.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
 }
 
 /** Sends request to delete comments from database. */
@@ -181,6 +216,7 @@ function createCommentElementList(comment) {
   timeElement.classList.add(ELEMENT_TIME_TEXT);
   commentTextElement.classList.add(ELEMENT_COMMENT_TEXT);
   commentTextElement.id = comment.id;
+  userElement.id = comment.id + ':user';
 
   if (comment.userId == this.getUserId() || this.isAdmin()) {
     const deleteCommentButton = document.createElement(HTML_ELEMENT_BUTTON);
@@ -207,4 +243,17 @@ function createCommentElementList(comment) {
   innerDiv.appendChild(commentTextElement);
   liElement.appendChild(innerDiv);
   return liElement;
+}
+
+/** Loads the options for the language select */
+function loadTranslateOptions() {
+  const languageSelect = document.getElementById(ELEMENT_LANG);
+  for (let i = 0; i < languages.length; i++) {
+    const languageOption = document.createElement("option");
+    languageOption.id = languages[i];
+    languageOption.innerText = languages[i];
+    languageOption.value = languageIds[i];
+    languageSelect.appendChild(languageOption);
+  }
+  languageSelect.value = languageIds[0];
 }

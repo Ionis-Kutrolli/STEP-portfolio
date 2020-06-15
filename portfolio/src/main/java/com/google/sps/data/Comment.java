@@ -13,14 +13,17 @@ public class Comment {
   // Timestamp in millis
   private final long timestamp;
   private final String languageId;
+  private final float sentiment;
 
-  private Comment(long id, String userId, String user, String comment, long timestamp, String languageId) {
+  private Comment(long id, String userId, String user, String comment, long timestamp, 
+      String languageId, float sentiment) {
     this.id = id;
     this.userId = userId;
     this.user = user;
     this.comment = comment;
     this.timestamp = timestamp;
     this.languageId = languageId;
+    this.sentiment = sentiment;
   }
 
   /**
@@ -36,8 +39,9 @@ public class Comment {
     String user = (String) entity.getProperty("user"); // Maybe null if no user
     String userId = (String) entity.getProperty("userId");
     String languageId = (String) entity.getProperty("language");
+    float sentiment =  ((Double) entity.getProperty("sentiment")).floatValue();
 
-    return new Comment(id, userId, user, userComment, timestamp, languageId);
+    return new Comment(id, userId, user, userComment, timestamp, languageId, sentiment);
   }
   
 }

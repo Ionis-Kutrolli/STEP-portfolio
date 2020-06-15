@@ -11,7 +11,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 /**
- * Servlet for handling the authentication of users
+ * Servlet for handling the authentication of users.
  */
 @WebServlet("/auth")
 public class HomeServlet extends HttpServlet {

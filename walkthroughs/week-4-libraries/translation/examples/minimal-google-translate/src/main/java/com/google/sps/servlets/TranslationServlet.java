@@ -23,6 +23,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet that handles the translation of comments.
+ */
 @WebServlet("/translate")
 public class TranslationServlet extends HttpServlet {
 
