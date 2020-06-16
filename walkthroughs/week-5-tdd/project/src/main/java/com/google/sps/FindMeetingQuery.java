@@ -26,6 +26,12 @@ import java.util.stream.Collectors;
 
 /**
  * Class used to find available meeting times of a query
+ * 
+ * Overall Time Complexity: Since time is more like a constant loops iterating over Time Ranges
+ * are limitted in size. O(n^2+m^2+m^2) which is O(n^2)
+ * 
+ * Overall Space Complexity: Nothing too complex O(n^2)
+ * 
  */
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
@@ -46,6 +52,7 @@ public final class FindMeetingQuery {
 
     meetingOptions.add(TimeRange.WHOLE_DAY);
 
+    // Time Complexity: O(n) going through n events
     events.forEach(event -> {
       Collection<String> attendees = event.getAttendees();
       if(!Collections.disjoint(attendees, requestAttendees)) {
@@ -71,13 +78,16 @@ public final class FindMeetingQuery {
 
   /**
    * Removes the given time from the options by splitting any overlapping times into smaller 
-   * segments. Modifies currentOptions. 
+   * segments. Modifies currentOptions.
+   *  
+   * Time Complexity looks O(n) 
+   *  
    * @param currentOptions The current available options to meet during
    * @param timeToRemove The time to be removed from current options
    * @param durationLimiter The minimum duration of time a time range can be
    */
   private void removeTime(Collection<TimeRange> currentOptions, TimeRange timeToRemove, int durationLimiter) {
-    Collection<TimeRange> toRemoveFromList = new ArrayList<>();
+    Collection<TimeRange> toRemoveFromList = new HashSet<>();
     Collection<TimeRange> toAddToList = new ArrayList<>();
     currentOptions.forEach( timeRange -> {
       if(timeRange.overlaps(timeToRemove)) {
@@ -103,6 +113,9 @@ public final class FindMeetingQuery {
   /**
    * Checks to see if all optional attendees can attend by going through events that
    * optional attendees are attending.
+   * 
+   * Time Complexity: O(n^2) iterating through events collection.
+   * 
    * @param currentOptions The current Time Range options for meeting.
    * @param events The events that optional attendees are attending.
    * @return All time ranges all optional attendees can attend at
@@ -115,11 +128,23 @@ public final class FindMeetingQuery {
     return meetingOptions;
   }
 
+  /**
+   * Determines the time(s) where the most ammount of optional attendees can 
+   * attend the requested event.
+   * 
+   * Time Complexity: O(n^2) running through events
+   * 
+   * @param currentOptions The current times available from mandatory attendees
+   * @param events The list of events that optional attendees are attending
+   * @param optionalAttendees The names of the optional Attendees for the request
+   * @param durationLimiter The minimum duration of time a time range can be for the request
+   * @return The time(s) the most optional attendees can attend in addition to mandatory attendees
+   */
   private Collection<TimeRange> optimizeOptionalAttendees(Collection<TimeRange> currentOptions, Collection<Event> events, Collection<String> optionalAttendees, int durationLimiter) {
     if (currentOptions.size() <= 1) {
       return currentOptions;
     }
-    Collection<TimeRange> optimizedOptionalOptions = new ArrayList<>(currentOptions);
+    Collection<TimeRange> optimizedOptions = new ArrayList<>(currentOptions);
     AtomicInteger leastNumberOptionalAttendees = new AtomicInteger(Integer.MAX_VALUE);
     Collection<Event> bestEvents = new ArrayList<>();
     events.forEach(event -> {
@@ -129,16 +154,16 @@ public final class FindMeetingQuery {
                                         .collect(Collectors.toSet());
       if(optionalAttendeesForEvent.size() < leastNumberOptionalAttendees.get()) {
         leastNumberOptionalAttendees.set(optionalAttendeesForEvent.size());
-        bestEvents.forEach( bestEvent -> removeTime(optimizedOptionalOptions, bestEvent.getWhen(), durationLimiter));
+        bestEvents.forEach( bestEvent -> removeTime(optimizedOptions, bestEvent.getWhen(), durationLimiter));
         bestEvents.clear();
         bestEvents.add(event);
       } else if (optionalAttendeesForEvent.size() == leastNumberOptionalAttendees.get()) {
         bestEvents.add(event);
       } else {
-        removeTime(optimizedOptionalOptions, event.getWhen(), durationLimiter);
+        removeTime(optimizedOptions, event.getWhen(), durationLimiter);
       }
     });
 
-    return optimizedOptionalOptions;
+    return optimizedOptions;
   }
 }
