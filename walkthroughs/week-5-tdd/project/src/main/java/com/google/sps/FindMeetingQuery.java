@@ -17,8 +17,12 @@ package com.google.sps;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import com.google.common.collect.ImmutableList;
+import java.util.stream.Collectors;
 
 /**
  * Class used to find available meeting times of a query
@@ -52,11 +56,13 @@ public final class FindMeetingQuery {
     });
     // Check to see if there are times where optional atendees can join change meeting options
     if(!optionalAttendeeEvents.isEmpty()) {
-      Collection<TimeRange> options = checkOptionalAttendees(meetingOptions, optionalAttendeeEvents, (int)requestDuration);
+      Collection<TimeRange> options = getAllOptionalAttendeeTimes(meetingOptions, optionalAttendeeEvents, (int)requestDuration);
       if (!options.isEmpty()){
           return options;
+      } else if (!optionalAttendees.isEmpty()) {
+        return optimizeOptionalAttendees(meetingOptions, optionalAttendeeEvents, optionalAttendees, (int)requestDuration);
       } else if (requestAttendees.isEmpty()){
-        return Arrays.asList();
+        return ImmutableList.of();
       }
     }
 
@@ -99,12 +105,40 @@ public final class FindMeetingQuery {
    * optional attendees are attending.
    * @param currentOptions The current Time Range options for meeting.
    * @param events The events that optional attendees are attending.
+   * @return All time ranges all optional attendees can attend at
    */
-  private Collection<TimeRange> checkOptionalAttendees(Collection<TimeRange> currentOptions, Collection<Event> events, int durationLimiter) {
+  private Collection<TimeRange> getAllOptionalAttendeeTimes(Collection<TimeRange> currentOptions, Collection<Event> events, int durationLimiter) {
     Collection<TimeRange> meetingOptions = new ArrayList<>(currentOptions);
     events.forEach(event -> {
       removeTime(meetingOptions, event.getWhen(), durationLimiter);
     });
     return meetingOptions;
+  }
+
+  private Collection<TimeRange> optimizeOptionalAttendees(Collection<TimeRange> currentOptions, Collection<Event> events, Collection<String> optionalAttendees, int durationLimiter) {
+    if (currentOptions.size() <= 1) {
+      return currentOptions;
+    }
+    Collection<TimeRange> optimizedOptionalOptions = new ArrayList<>(currentOptions);
+    AtomicInteger leastNumberOptionalAttendees = new AtomicInteger(Integer.MAX_VALUE);
+    Collection<Event> bestEvents = new ArrayList<>();
+    events.forEach(event -> {
+      final Set<String> optionalAttendeesForEvent = event.getAttendees().stream()
+                                        .distinct()
+                                        .filter(optionalAttendees::contains)
+                                        .collect(Collectors.toSet());
+      if(optionalAttendeesForEvent.size() < leastNumberOptionalAttendees.get()) {
+        leastNumberOptionalAttendees.set(optionalAttendeesForEvent.size());
+        bestEvents.forEach( bestEvent -> removeTime(optimizedOptionalOptions, bestEvent.getWhen(), durationLimiter));
+        bestEvents.clear();
+        bestEvents.add(event);
+      } else if (optionalAttendeesForEvent.size() == leastNumberOptionalAttendees.get()) {
+        bestEvents.add(event);
+      } else {
+        removeTime(optimizedOptionalOptions, event.getWhen(), durationLimiter);
+      }
+    });
+
+    return optimizedOptionalOptions;
   }
 }
