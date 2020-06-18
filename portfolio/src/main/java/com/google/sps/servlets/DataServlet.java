@@ -31,7 +31,7 @@ import com.google.common.base.*;
 /**
  * Servlet for comment retrieval from datastore.
  */
-@WebServlet(Flags.isReal ? "/comment" : "")
+@WebServlet(Flags.isReal ? "/comment" : "/disabled-comment")
 public class DataServlet extends HttpServlet {
 
   private CommentRetriever commentRetriever;
