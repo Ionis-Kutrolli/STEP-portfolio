@@ -18,6 +18,7 @@ import java.io.IOException;
 import com.google.sps.data.Comment;
 import com.google.sps.data.CommentRetriever;
 import com.google.sps.data.CommentData;
+import com.google.sps.configuration.Flags;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +31,7 @@ import com.google.common.base.*;
 /**
  * Servlet for comment retrieval from datastore.
  */
-@WebServlet("/comment")
+@WebServlet(Flags.isReal ? "/comment" : "")
 public class DataServlet extends HttpServlet {
 
   private CommentRetriever commentRetriever;
