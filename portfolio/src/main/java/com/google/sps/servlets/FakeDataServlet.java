@@ -28,15 +28,16 @@ public class FakeDataServlet extends HttpServlet {
     for(int i = 0; i < 3; i++) {
       Entity commentEntity = new Entity("Comment");
       commentEntity.setProperty("comment", "This is comment " + i);
-      commentEntity.setProperty("timestamp", "0");
+      commentEntity.setProperty("timestamp", 0L);
       commentEntity.setProperty("user", "Anonymous");
       commentEntity.setProperty("userId", "0");
       commentEntity.setProperty("language", "en");
-      commentEntity.setProperty("sentiment", "0.0");
+      commentEntity.setProperty("sentiment", 0.0);
 
       comments.add(Comment.fromEntity(commentEntity));
     }
     CommentData data = new CommentData(comments, 0);
+
      // Json conversion
      Gson gson = new Gson();
      String json = gson.toJson(data);

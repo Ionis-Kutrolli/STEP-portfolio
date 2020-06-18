@@ -1,7 +1,7 @@
 /** The id of the user if they are logged in */
 var userId;
 /** If the user is and Admin */
-var isAdmin = false;
+var isAdminVar = false;
 
 /** Fetches the link to allow users to login */
 function getUserAuthentication() {
@@ -68,5 +68,5 @@ function getUserId() {
 
 /** Returns whether the user is admin or not */
 function isAdmin() {
-  return isAdmin;
+  return isAdminVar;
 }

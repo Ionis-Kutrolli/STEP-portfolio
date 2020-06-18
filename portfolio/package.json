@@ -2,7 +2,6 @@
   "name": "portfolio",
   "version": "1.0.0",
   "description": "STEP training portfolio project",
-  "main": "script.js",
   "scripts": {
     "test": "mocha --recursive ./src/test"
   },
@@ -18,5 +17,11 @@
     "chromedriver": "^83.0.0",
     "mocha": "^8.0.1",
     "selenium-webdriver": "^4.0.0-alpha.7"
+  },
+  "dependencies": {
+    "babel": "^6.23.0"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   }
 }
